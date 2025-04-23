@@ -1,4 +1,4 @@
-package com.test.dto;
+package com.CinephileLog.dto;
 
 import lombok.Data;
 
