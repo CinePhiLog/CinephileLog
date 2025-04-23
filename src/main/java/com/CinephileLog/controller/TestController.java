@@ -1,7 +1,7 @@
-package com.test.controller;
+package com.CinephileLog.controller;
 
-import com.test.service.TestJpaService;
-import com.test.service.TestService;
+import com.CinephileLog.service.TestJpaService;
+import com.CinephileLog.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

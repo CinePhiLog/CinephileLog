@@ -1,4 +1,4 @@
-package com.test.mapper;
+package com.CinephileLog.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

@@ -1,4 +1,4 @@
-package com.test.repository;
+package com.CinephileLog.repository;
 
 
 public interface TestJpaInterface{

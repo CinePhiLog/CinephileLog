@@ -1,6 +1,6 @@
-package com.test.service;
+package com.CinephileLog.service;
 
-import com.test.mapper.TestMapper;
+import com.CinephileLog.mapper.TestMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
