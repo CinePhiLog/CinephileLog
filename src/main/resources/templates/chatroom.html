@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방</title>
+    <style>
+        body {
+            background-color: #6D6BAE;
+            margin: 0;
+            padding: 20px;
+            font-family: sans-serif;
+        }
+
+        #chat-container {
+            width: 360px;
+            height: 580px;
+            margin: auto;
+            background: #f3f2f8;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+        }
+
+        .my-wrapper {
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .other-wrapper {
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .message-bubble {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 1px 2px 6px rgba(0,0,0,0.1);
+            word-break: break-word;
+        }
+
+        .my-bubble {
+            background: #8174c4;
+            color: white;
+        }
+
+        .other-bubble {
+            background: #ffffff;
+            color: #333;
+        }
+
+        .system-message {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin: 10px 0;
+        }
+
+        .date-separator {
+            text-align: center;
+            font-size: 11px;
+            color: #bbb;
+            margin: 10px 0;
+        }
+
+        #chat-input-container {
+            display: flex;
+            align-items: center;
+            border-top: 1px solid #ddd;
+            padding: 10px;
+            background: #fff;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        #send-button {
+            margin-left: 8px;
+            padding: 8px 14px;
+            background: #7b6dc8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background: #695ab3;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="chat-messages"></div>
+
+    <div id="chat-input-container">
+        <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
+        <button id="send-button" onclick="sendMessage()">▶️</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+<script th:inline="javascript">
+    const roomId = [[${roomId}]];
+    const userId = [[${userId}]];
+    const nickname = [[${nickname}]];
+
+    let stompClient;
+    let page = 0;
+    const size = 15;
+    const chatBox = document.getElementById("chat-messages");
+    let lastDateShown = "";
+
+    // WebSocket 연결
+    window.addEventListener("load", function () {
+        const socket = new SockJS("/ws-chat");
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function () {
+            // 메시지 구독
+            stompClient.subscribe(`/topic/chat/${roomId}`, function (message) {
+                const msg = JSON.parse(message.body);
+                if (msg.type === "SYSTEM") {
+                    displaySystemMessage(msg.content);
+                } else {
+                    displayMessage(msg);
+                }
+            });
+
+            // 입장 알림
+            stompClient.send(`/app/chat/enter/${roomId}`, {}, JSON.stringify({
+                userId: userId,
+                nickname: nickname,
+                type: "SYSTEM",
+                content: `${nickname}님이 입장하셨습니다.`
+            }));
+
+            // 이전 메시지 불러오기
+            loadMessages();
+        });
+    });
+
+    // 메시지 전송
+    function sendMessage() {
+        const content = document.getElementById("chat-input").value.trim();
+        if (!content) return;
+
+        const message = {
+            userId: userId,
+            nickname: nickname,
+            content: content
+        };
+
+        stompClient.send(`/app/chat/send/${roomId}`, {}, JSON.stringify(message));
+        document.getElementById("chat-input").value = "";
+    }
+
+    // 메시지 표시
+    function displayMessage(msg) {
+        const isMine = parseInt(msg.userId) === parseInt(userId);
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message-wrapper", isMine ? "my-wrapper" : "other-wrapper");
+
+        const msgDate = new Date(msg.sendTime);
+        const dateStr = msgDate.toLocaleDateString();
+
+        if (lastDateShown !== dateStr) {
+            const separator = document.createElement("div");
+            separator.classList.add("date-separator");
+            separator.innerText = dateStr;
+            chatBox.appendChild(separator);
+            lastDateShown = dateStr;
+        }
+
+        const meta = document.createElement("div");
+        meta.classList.add("message-meta");
+        meta.innerText = `${msg.nickname} · ${msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+        const bubble = document.createElement("div");
+        bubble.classList.add("message-bubble", isMine ? "my-bubble" : "other-bubble");
+        bubble.innerText = msg.content;
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(bubble);
+        chatBox.appendChild(wrapper);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function displaySystemMessage(text) {
+        const systemMsg = document.createElement("div");
+        systemMsg.classList.add("system-message");
+        systemMsg.innerText = text;
+        chatBox.appendChild(systemMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // 무한 스크롤 메시지 로딩
+    function loadMessages() {
+        fetch(`/api/chat/messages?roomId=${roomId}&page=${page}&size=${size}`)
+            .then(res => res.json())
+            .then(data => {
+                data.reverse().forEach(msg => {
+                    insertOldMessage(msg);
+                });
+                page++;
+                if (page === 1) chatBox.scrollTop = chatBox.scrollHeight;
+            });
+    }
+
+    function insertOldMessage(msg) {
+        const isMine = parseInt(msg.userId) === parseInt(userId);
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message-wrapper", isMine ? "my-wrapper" : "other-wrapper");
+
+        const msgDate = new Date(msg.sendTime);
+        const dateStr = msgDate.toLocaleDateString();
+
+        if (lastDateShown !== dateStr) {
+            const separator = document.createElement("div");
+            separator.classList.add("date-separator");
+            separator.innerText = dateStr;
+            chatBox.prepend(separator);
+            lastDateShown = dateStr;
+        }
+
+        const meta = document.createElement("div");
+        meta.classList.add("message-meta");
+        meta.innerText = `${msg.nickname} · ${msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+        const bubble = document.createElement("div");
+        bubble.classList.add("message-bubble", isMine ? "my-bubble" : "other-bubble");
+        bubble.innerText = msg.content;
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(bubble);
+        chatBox.prepend(wrapper);
+    }
+
+    // 무한 스크롤 감지
+    chatBox.addEventListener("scroll", () => {
+        if (chatBox.scrollTop === 0) {
+            loadMessages();
+        }
+    });
+
+    // 퇴장 처리
+    window.addEventListener("beforeunload", () => {
+        stompClient.send(`/app/chat/leave/${roomId}`, {}, JSON.stringify({
+            userId: userId,
+            nickname: nickname,
+            type: "SYSTEM",
+            content: `${nickname}님이 퇴장하셨습니다.`
+        }));
+        stompClient.disconnect();
+    });
+</script>
+
+</body>
+</html>
