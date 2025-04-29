@@ -21,7 +21,8 @@ public class User {
     private String email;
     private String nickname;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @ManyToOne
@@ -32,6 +33,14 @@ public class User {
     private String isActive;
     private LocalDateTime registerDate;
     private LocalDateTime updatedDate;
+
+    public User(String provider, String email, String nickname, Role role, Grade grade) {
+        this.provider = provider;
+        this.email = email;
+        this.nickname = nickname;
+        this.role = role;
+        this.grade = grade;
+    }
 }
 
 
