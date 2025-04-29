@@ -27,7 +27,7 @@ public class UserService {
         if (existingUser != null) {
             return existingUser;
         } else { //Create new account when user is not in DB or no longer active
-            Role role = roleRepository.findFirstByOrderByRoleIdAsc();
+            Role role = roleRepository.findFirstByOrderByIdAsc();
             if (role == null) {
                 throw new IllegalArgumentException("There's no role data available");
             }
