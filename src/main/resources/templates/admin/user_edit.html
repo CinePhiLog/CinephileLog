@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 수정</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    form {
+      max-width: 400px;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>회원 수정</h1>
+
+<form th:action="@{/admin/users/{id}(id=${user.userId})}" method="post">
+  <input type="hidden" name="_method" value="post"/> <!-- 실제로는 POST 방식으로 처리 -->
+
+  <label>이메일</label>
+  <input type="email" name="email" th:value="${user.email}" required/>
+
+  <label>닉네임</label>
+  <input type="text" name="nickname" th:value="${user.nickname}" required/>
+
+  <label>회원 등급</label>
+  <select name="gradeId" required>
+    <option th:each="grade : ${grades}"
+            th:value="${grade.gradeId}"
+            th:text="${grade.gradeName}"
+            th:selected="${grade.gradeId == user.grade.gradeId}">
+    </option>
+  </select>
+
+  <button type="submit">수정 완료</button>
+</form>
+
+</body>
+</html>
