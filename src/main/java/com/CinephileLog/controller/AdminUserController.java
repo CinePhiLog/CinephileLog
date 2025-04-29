@@ -1,7 +1,7 @@
 package com.CinephileLog.controller;
 
-import com.CinephileLog.domain.user.Grade;
-import com.CinephileLog.domain.user.User;
+import com.CinephileLog.domain.Grade;
+import com.CinephileLog.domain.User;
 import com.CinephileLog.repository.GradeRepository;
 import com.CinephileLog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ public class AdminUserController {
     @GetMapping
     public String listUsers(Model model) {
         List<User> users = userRepository.findAll();
+        System.out.println("Users: " + users);
         model.addAttribute("users", users);
         return "admin/user_list";
     }
@@ -30,9 +31,12 @@ public class AdminUserController {
     // 회원 수정 화면
     @GetMapping("/{id}/edit")
     public String editUserForm(@PathVariable Long id, Model model) {
-        User user = userRepository.findById(id).orElseThrow();
-        List<Grade> grades = gradeRepository.findAll();
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return "redirect:/admin/users";
+        }
 
+        List<Grade> grades = gradeRepository.findAll();
         model.addAttribute("user", user);
         model.addAttribute("grades", grades);
         return "admin/user_edit";
@@ -45,7 +49,11 @@ public class AdminUserController {
                              @RequestParam String email,
                              @RequestParam String nickname,
                              @RequestParam Long gradeId) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return "redirect:/admin/users";
+        }
+
         user.setEmail(email);
         user.setNickname(nickname);
 
@@ -54,13 +62,13 @@ public class AdminUserController {
 
         userRepository.save(user);
 
-        return "redirect:/admin/users"; // 수정 완료 후 스트로 이동
+        return "redirect:/admin/users";
     }
 
     // 회원 삭제
     @DeleteMapping("/{id}")
-    public @ResponseBody String deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
-        return "OK";
+        return "redirect:/admin/users";
     }
 }
