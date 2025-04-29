@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0' // Jackson 버전 맞추기// Jackson 에서 LocalDate 사용 위함
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' // Jackson 버전 맞추기// Jackson 에서 LocalDate 사용 위함
 }
 
 tasks.named('test') {
