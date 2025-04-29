@@ -1,11 +1,14 @@
 package com.CinephileLog.repository;
 
+import com.CinephileLog.domain.user.Grade;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 import com.CinephileLog.domain.Grade;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+@Repository
 public interface GradeRepository extends JpaRepository<Grade, Long> {
-
-    Optional<Grade> findTopByMinPointLessThanEqualOrderByMinPointDesc(Long point);  // 받은 포인트에서 가장 높은 등급 찾아줌
+    Optional<Grade> findTopByMinPointLessThanEqualOrderByMinPointDesc(Long point);
+    Grade findFirstByOrderByGradeIdAsc();
 }

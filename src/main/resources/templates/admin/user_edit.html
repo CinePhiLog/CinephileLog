@@ -33,25 +33,24 @@
 <h1>회원 수정</h1>
 
 <form th:action="@{/admin/users/{id}(id=${user.userId})}" method="post">
-  <!-- Spring에서 HTTP 메서드를 POST로 처리하기 위한 hidden 필드 -->
-  <input type="hidden" name="_method" value="post"/>
+  <input type="hidden" name="_method" value="post"/> <!-- 실제로는 POST 방식으로 처리 -->
 
-  <label for="email">이메일</label>
-  <input type="email" id="email" name="email" th:value="${user.email}" required/>
+  <label>이메일</label>
+  <input type="email" name="email" th:value="${user.email}" required/>
 
-  <label for="nickname">닉네임</label>
-  <input type="text" id="nickname" name="nickname" th:value="${user.nickname}" required/>
+  <label>닉네임</label>
+  <input type="text" name="nickname" th:value="${user.nickname}" required/>
 
-  <label for="role">회원 등급:</label>
-  <select id="role" name="role">
-    <option value="JELLY" th:selected="${user == 'JELLY'}">Jelly</option>
-    <option value="COLA" th:selected="${user == 'COLA'}">Cola</option>
-    <option value="NACHO" th:selected="${user == 'NACHO'}">Nacho</option>
-    <option value="HOTDOG" th:selected="${user == 'HOTDOG'}">Hotdog</option>
-    <option value="POPCORN" th:selected="${user == 'POPCORN'}">Popcorn</option>
+  <label>회원 등급</label>
+  <select name="gradeId" required>
+    <option th:each="grade : ${grades}"
+            th:value="${grade.gradeId}"
+            th:text="${grade.gradeName}"
+            th:selected="${grade.gradeId == user.grade.gradeId}">
+    </option>
   </select>
 
-  <button type="submit">수정</button>
+  <button type="submit">수정 완료</button>
 </form>
 
 </body>
