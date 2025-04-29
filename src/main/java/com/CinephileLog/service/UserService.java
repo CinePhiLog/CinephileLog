@@ -22,9 +22,9 @@ public class UserService {
     }
 
     public User logIn(AddUserRequest request) {
-        User existingUser = userRepository.findByEmailAndProvider(request.getEmail(), request.getProvider());
+        User existingUser = userRepository.findByEmailAndProviderAndIsActive(request.getEmail(), request.getProvider(),"Y");
 
-        if (existingUser != null && existingUser.getIsActive().equals("Y")) {
+        if (existingUser != null) {
             return existingUser;
         } else { //Create new account when user is not in DB or no longer active
             Role role = roleRepository.findFirstByOrderByRoleIdAsc();
