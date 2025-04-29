@@ -22,6 +22,6 @@ public class TestController {
         model.addAttribute("jpaResult", testJpaService.getTestValue());
         return "index";
     }
-
-
 }
+
+
