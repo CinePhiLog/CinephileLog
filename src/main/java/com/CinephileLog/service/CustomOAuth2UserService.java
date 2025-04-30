@@ -48,16 +48,24 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             throw new OAuth2AuthenticationException("Get user information from " + provider + " failed");
         }
 
-        AddUserRequest addUserRequest = new AddUserRequest();
-        addUserRequest.setEmail(email);
-        addUserRequest.setNickname(nickname);
-        addUserRequest.setProvider(provider);
+        User activeUser = userService.getActiveUserByEmailAndProvider(email, provider);
+        if (activeUser == null) {
+            AddUserRequest addUserRequest = new AddUserRequest();
+            addUserRequest.setEmail(email);
+            addUserRequest.setProvider(provider);
 
-        User user = userService.logIn(addUserRequest);
+            User user = userService.signUp(addUserRequest);
 
-        newAttributes.put("userId", user.getUserId());
-        newAttributes.put("email", user.getEmail());
-        newAttributes.put("nickname", user.getNickname());
+            newAttributes.put("userId", user.getUserId());
+            newAttributes.put("email", user.getEmail());
+            newAttributes.put("nickname", user.getNickname());
+            newAttributes.put("role", user.getRole());
+        } else {
+            newAttributes.put("userId", activeUser.getUserId());
+            newAttributes.put("email", activeUser.getEmail());
+            newAttributes.put("nickname", activeUser.getNickname());
+            newAttributes.put("role", activeUser.getRole());
+        }
 
         return new CustomOAuth2User(
                 newAttributes,

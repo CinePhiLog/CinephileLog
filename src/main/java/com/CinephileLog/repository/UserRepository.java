@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByIsActive(String isActive); // 활동 중인 회원만 조회
     User findByEmailAndProviderAndIsActive(String email, String provider, String isActive);
+    User findByNickname(String nickname);
 }
