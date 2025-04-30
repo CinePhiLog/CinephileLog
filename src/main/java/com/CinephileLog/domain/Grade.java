@@ -11,11 +11,16 @@ import lombok.*;
 @AllArgsConstructor
 
 public class Grade {
-
     @Id
+    @Column(updatable = false)
     private Long gradeId;
 
+    @Column(nullable = false)
     private String gradeName;
+
+    @Column(nullable = false)
     private Long minPoint;
+
+    @Column(nullable = false)
     private String description;
 }

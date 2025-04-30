@@ -79,6 +79,9 @@ a {
 .normal-button {
     font-weight: bold;
     width: 100px;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 7px;
     cursor: pointer;
 }
@@ -96,4 +99,8 @@ a {
 .submit-button:hover {
     text-shadow: 1px 1px 2px grey;
     cursor: pointer;
+}
+
+.white-text {
+    color: white;
 }

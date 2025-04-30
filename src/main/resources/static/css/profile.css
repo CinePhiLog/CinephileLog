@@ -11,3 +11,8 @@
     padding: 10px;
     border-radius: 10px;
 }
+
+.form-content > * {
+    height: 50px;
+    align-content: center;
+}

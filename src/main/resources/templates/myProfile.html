@@ -30,18 +30,42 @@
                 <span class="title">내 프로필</span><br><br>
                 <div class="image-box">
                     <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="badge-img"/>
-                </div><br>
-                <button class="normal-button">수정</button>
+                </div>
+                <button id="edit-user-btn" class="normal-button">수정</button>
             </div>
             <div id="profile-right" class="col-7">
                 <span class="title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><br><br><br>
-                <input type="hidden" id="user-id" th:value="${user.getUserId()}">
-                <span class="text" th:text="'닉네임 : ' + ${user.getNickname()}"></span><br><br>
-                <span class="text" th:text="'이메일 : ' + ${user.getEmail()}"></span><br><br>
-                <span class="text" th:text="'가입일 : ' + ${#temporals.format(user.getRegisterDate(), 'yyyy-MM-dd HH:mm:ss')}"></span><br><br>
-                <span class="text" th:text="'리뷰 수 : '"></span><br><br>
-                <span class="text" th:text="'좋아요 수 : '"></span><br><br><br>
+                <div class="form-content">
+                    <input type="hidden" id="user-id" th:value="${user.getUserId()}">
+                    <div class = "row text">
+                        <div class="col-2">닉네임 :</div>
+                        <div class="col-10">
+                            <span id="nickname-label" th:text="${user.getNickname()}"></span>
+                            <input type="hidden" id="nickname-ori" th:value="${user.getNickname()}">
+                            <div class="col-9">
+                                <input type="text" id="nickname-input" class="form-control" placeholder="nickname" th:value="${user.getNickname()}">
+                            </div>
+                            <div class="col-3">
+                                <button type="button" id="check-nickname-btn" class="normal-button">체크</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "row text">
+                        <div class="col-2">이메일 :</div>
+                        <div class="col-10" th:text="${user.getEmail()}"></div>
+                    </div>
+                    <div class = "row text">
+                        <div class="col-2">가입일 :</div>
+                        <div class="col-10" th:text="${#temporals.format(user.getRegisterDate(), 'yyyy-MM-dd HH:mm:ss')}"></div>
+                    </div>
+                    <div class = "row text">
+                        <div class="col-2">포인트 :</div>
+                        <div class="col-10" th:text="${user.getPoint()}"></div>
+                    </div>
+                </div>
                 <button type="button" id="terminate-user-btn" class="normal-button">탈퇴</button>
+                <button type="button" id="save-user-btn" class="normal-button">저장</button>
+                <button type="button" id="cancel-user-btn" class="normal-button">취소</button>
             </div>
         </div>
     </div>
