@@ -1,74 +1,84 @@
 package com.CinephileLog.controller;
 
 import com.CinephileLog.domain.Grade;
+import com.CinephileLog.domain.Role;
 import com.CinephileLog.domain.User;
-import com.CinephileLog.repository.GradeRepository;
-import com.CinephileLog.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.CinephileLog.service.AdminUserManagementService;
+import com.CinephileLog.service.GradeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/users")
-@RequiredArgsConstructor
+@RequestMapping("/admin/users")     // 유저 관리
 public class AdminUserController {
-    private final UserRepository userRepository;
-    private final GradeRepository gradeRepository;
 
-    // 회원 리스트 화면
+    private final AdminUserManagementService adminUserManagementService;
+    private final GradeService gradeService;
+
+    @Autowired
+    public AdminUserController(AdminUserManagementService adminUserManagementService, GradeService gradeService) {
+        this.adminUserManagementService = adminUserManagementService;
+        this.gradeService = gradeService;
+    }
+
     @GetMapping
     public String listUsers(Model model) {
-        List<User> users = userRepository.findAll();
-        System.out.println("Users: " + users);
+        List<User> users = adminUserManagementService.getAllUsers();
         model.addAttribute("users", users);
-        return "admin/user_list";
+        return "admin/user/list";
     }
 
-    // 회원 수정 화면
-    @GetMapping("/{id}/edit")
-    public String editUserForm(@PathVariable Long id, Model model) {
-        User user = userRepository.findById(id).orElse(null);
+    @GetMapping("/edit/{userId}")
+    public String editUserForm(@PathVariable Long userId, Model model) {
+        User user = adminUserManagementService.getUserById(userId);
         if (user == null) {
             return "redirect:/admin/users";
         }
+        List<Grade> grades = gradeService.getAllGrades();
+        List<Role> roles = Arrays.asList(Role.values());
 
-        List<Grade> grades = gradeRepository.findAll();
         model.addAttribute("user", user);
         model.addAttribute("grades", grades);
-        return "admin/user_edit";
+        model.addAttribute("roles", roles);
+        return "admin/user/edit";
     }
 
-    // 회원 수정 처리
-    @PostMapping("/{id}")
-    @Transactional
-    public String updateUser(@PathVariable Long id,
-                             @RequestParam String email,
-                             @RequestParam String nickname,
-                             @RequestParam Long gradeId) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
+    @PostMapping("/update/{userId}")
+    public String updateUser(@PathVariable Long userId, @ModelAttribute User updatedUser, @RequestParam("role") Role role) {
+        User existingUser = adminUserManagementService.getUserById(userId);
+        if (existingUser == null) {
             return "redirect:/admin/users";
         }
+        updatedUser.setUserId(userId);
+        updatedUser.setRole(role);
 
-        user.setEmail(email);
-        user.setNickname(nickname);
+        Grade grade = gradeService.getGradeById(updatedUser.getGrade().getGradeId()).orElse(null);
+        updatedUser.setGrade(grade);
 
-        Grade grade = gradeRepository.findById(gradeId).orElseThrow();
-        user.setGrade(grade);
-
-        userRepository.save(user);
-
+        adminUserManagementService.updateUser(userId, updatedUser);
         return "redirect:/admin/users";
     }
 
-    // 회원 삭제
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+    @PostMapping("/delete/{userId}")
+    public String deleteUser(@PathVariable Long userId) {
+        adminUserManagementService.deleteUser(userId);
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
+        List<User> searchResults;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            searchResults = adminUserManagementService.searchUsersByKeyword(keyword);
+        } else {
+            searchResults = adminUserManagementService.getAllUsers();
+        }
+        model.addAttribute("users", searchResults);
+        return "admin/user/list";
     }
 }

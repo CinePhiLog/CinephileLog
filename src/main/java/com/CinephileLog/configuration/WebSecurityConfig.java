@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                                            OAuth2AuthorizationRequestResolver customResolver) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**","/css/**","/login","/user").permitAll()
+                        .requestMatchers("/images/**","/css/**","/login","/user", "/admin/**").permitAll()
                         .anyRequest().authenticated())
                         .oauth2Login(oauth2 -> oauth2
                                 .userInfoEndpoint(userInfo -> userInfo
