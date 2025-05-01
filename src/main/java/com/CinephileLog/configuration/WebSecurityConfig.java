@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                                         exception.printStackTrace();
                                 })
                                 .loginPage("/login") // Custom login page Url
-                                .defaultSuccessUrl("/checkNickname", true)
+                                .defaultSuccessUrl("/checkNickname", true)  //redirect to check nickname after successfully log in
                                 .authorizationEndpoint(endpoint -> endpoint
                                         .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
                                 ))
@@ -53,6 +53,5 @@ public class WebSecurityConfig {
                         .csrf(auth -> auth.disable());
         return httpSecurity.build();
     }
-
 
 }

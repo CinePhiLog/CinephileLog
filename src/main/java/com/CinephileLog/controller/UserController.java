@@ -4,10 +4,9 @@ import com.CinephileLog.domain.User;
 import com.CinephileLog.dto.AddUserRequest;
 import com.CinephileLog.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -21,14 +20,14 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("api/userByNickname/")
-    public ResponseEntity<Void> getUserByNickname(@RequestParam("nickname") String nickname) {
+    @PostMapping("api/checkNickname")
+    public boolean checkNickname(@RequestBody String nickname) {
         User user = userService.getUserByNickname(nickname);
 
         if (user == null) {
-            return ResponseEntity.ok().build();
+            return true;
         } else {
-            return ResponseEntity.notFound().build();
+            return false;
         }
     }
 
