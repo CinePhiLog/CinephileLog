@@ -1,7 +1,6 @@
 package com.CinephileLog.controller;
 
 import com.CinephileLog.domain.User;
-import com.CinephileLog.dto.AddUserRequest;
 import com.CinephileLog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -42,27 +40,17 @@ public class UserViewController {
     @GetMapping("/checkNickname")
     public String checkNickname(@AuthenticationPrincipal OAuth2User user) {
         if (user.getAttribute("nickname") == null) {
-            return "redirect:/setUpNickname";
+            return "redirect:/setUpNickname";   //redirect to set up nickname page if user hasn't set up
         }
 
         return "redirect:/home";
     }
 
     @GetMapping("/setUpNickname")
-    public String setUpNickname() {
-        return "setUpNickname";
-    }
-
-    @PostMapping("/saveNickname")
-    public String saveNickname(@AuthenticationPrincipal OAuth2User user, @RequestParam String nickname) {
+    public String setUpNickname(@AuthenticationPrincipal OAuth2User user, Model model) {
         Long userId = user.getAttribute("userId");
-
-        AddUserRequest addUserRequest = new AddUserRequest();
-        addUserRequest.setNickname(nickname);
-
-        userService.updateUserById(userId,addUserRequest);
-
-        return "redirect:/home";
+        model.addAttribute("userId", userId);
+        return "setUpNickname";
     }
 
     @GetMapping("/profile")

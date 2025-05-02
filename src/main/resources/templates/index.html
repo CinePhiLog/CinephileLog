@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>CinePhiLog Main</title>
@@ -152,23 +151,11 @@
       width: 80px;
       z-index: 1000;
     }
-
-    .admin-link {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 16px;
-      z-index: 1001;
-    }
   </style>
 </head>
 <body>
 
+<!-- SECTION 1 -->
 <section id="main1" class="container">
   <div class="circle circle1"></div>
   <div class="circle circle2"></div>
@@ -179,7 +166,8 @@
 
   <div class="search-bar">
     <form id="searchForm" action="/movie/search" method="get" style="display: flex; align-items: center;">
-      <label for="searchInput" style="display:none;">영화 제목 검색</label> <input type="text" id="searchInput" name="title" placeholder="영화 제목을 입력하세요" required />
+      <label for="searchInput" style="display:none;">영화 제목 검색</label> <!-- label 추가 -->
+      <input type="text" id="searchInput" name="title" placeholder="영화 제목을 입력하세요" required />
       <button type="submit">
         <svg fill="black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
           <path d="M10 2a8 8 0 105.293 14.707l4.853 4.853 1.414-1.414-4.853-4.853A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
@@ -189,12 +177,9 @@
   </div>
 
   <div class="logo">CinePhiloG.</div>
-
-  <div sec:authorize="hasRole('ADMIN')">
-    <a th:href="@{/admin}" class="admin-link">관리자 페이지</a>
-  </div>
 </section>
 
+<!-- SECTION 2 -->
 <section id="main2">
   <div class="ranking-section">
     <h3 style="color:white;">영화 순위</h3>
