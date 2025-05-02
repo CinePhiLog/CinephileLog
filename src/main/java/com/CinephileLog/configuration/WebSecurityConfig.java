@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 
 @Configuration
@@ -41,7 +40,7 @@ public class WebSecurityConfig {
                             exception.printStackTrace();
                         })
                         .loginPage("/login") // Custom login page Url
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/checkNickname", true)
                         .authorizationEndpoint(endpoint -> endpoint
                                 .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
                         ))
@@ -54,6 +53,5 @@ public class WebSecurityConfig {
                 .csrf(auth -> auth.disable());
         return httpSecurity.build();
     }
-
 
 }

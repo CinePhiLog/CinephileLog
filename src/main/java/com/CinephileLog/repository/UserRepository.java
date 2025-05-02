@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmailAndProviderAndIsActive(String email, String provider, String isActive);
     List<User> findByNicknameContaining(String keyword);    // 키워드로 닉네임 검색
-    Optional<User> findByNickname(String nickname);
+    User findByNickname(String nickname);
 }
