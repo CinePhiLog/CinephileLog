@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>리뷰 상세 정보</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="container">
+  <h1>리뷰 상세 정보</h1>
+  <div class="detail-box">
+    <p><strong>닉네임:</strong> <span th:text="${review.user.nickname}"></span></p>
+    <p><strong>영화 제목:</strong> <span th:text="${review.movieId.title}"></span></p> <p><strong>내용:</strong> <span th:text="${review.content}"></span></p>
+    <p><strong>작성일:</strong> <span th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <form th:action="@{/admin/reviews/delete/{reviewId}(reviewId=${review.reviewId})}" method="post">
+      <button type="submit" style="background-color:blue; color:white;">삭제</button>
+    </form>
+  </div>
+  <br>
+  <a th:href="@{/admin/reviews}">리뷰 목록</a>
+</div>
+</body>
+</html>

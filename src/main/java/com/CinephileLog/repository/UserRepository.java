@@ -2,14 +2,14 @@ package com.CinephileLog.repository;
 
 import com.CinephileLog.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-import com.CinephileLog.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByIsActive(String isActive); // 활동 중인 회원만 조회
     User findByEmailAndProviderAndIsActive(String email, String provider, String isActive);
-    User findByNickname(String nickname);
+    List<User> findByNicknameContaining(String keyword);    // 키워드로 닉네임 검색
+    Optional<User> findByNickname(String nickname);
 }

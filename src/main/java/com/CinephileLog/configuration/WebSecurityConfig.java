@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 
 @Configuration
@@ -30,28 +31,29 @@ public class WebSecurityConfig {
                                            OAuth2AuthorizationRequestResolver customResolver) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**","/css/**","/login","/user").permitAll()
+                        .requestMatchers("/images/**","/css/**","/login","/user", "/admin/**").permitAll()
                         .anyRequest().authenticated())
-                        .oauth2Login(oauth2 -> oauth2
-                                .userInfoEndpoint(userInfo -> userInfo
-                                        .userService(customOAuth2UserService)
-                                )
-                                .failureHandler((request, response, exception) -> {
-                                        exception.printStackTrace();
-                                })
-                                .loginPage("/login") // Custom login page Url
-                                .defaultSuccessUrl("/checkNickname", true)  //redirect to check nickname after successfully log in
-                                .authorizationEndpoint(endpoint -> endpoint
-                                        .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
-                                ))
-                        .logout(auth -> auth
-                                .logoutSuccessUrl("/login")
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
                         )
-                        .csrf(auth -> auth.disable());
+                        .failureHandler((request, response, exception) -> {
+                            exception.printStackTrace();
+                        })
+                        .loginPage("/login") // Custom login page Url
+                        .defaultSuccessUrl("/home", true)
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
+                        ))
+                .logout(auth -> auth
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                )
+                .csrf(auth -> auth.disable());
         return httpSecurity.build();
     }
+
 
 }

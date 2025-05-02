@@ -1,60 +1,60 @@
 package com.CinephileLog.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "User")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String provider;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 300)
     private String email;
 
-    @Column
+    @Column(length = 100)
     private String nickname;
 
-    @Column
-    private String role = "ROLE_USER";
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "ENUM('ROLE_ADMIN','ROLE_USER') DEFAULT 'ROLE_USER'")
+    private Role role;
 
-    @Column
-    private Long point = 0L;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grade_id", nullable = false)
+    private Grade grade;
 
-    @Column
-    private String isActive = "Y";
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
+    private Long point;
 
-    @CreatedDate
+    @Column(nullable = false, length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'Y'")
+    private String isActive;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime registerDate;
 
-    @LastModifiedDate
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedDate;
-
-    @ManyToOne
-    @JoinColumn(name="gradeId")
-    private Grade grade;
 
     public User(String provider, String email, String nickname, Grade grade) {
         this.provider = provider;
         this.email = email;
         this.nickname = nickname;
         this.grade = grade;
+        this.role = Role.ROLE_USER;
+        this.isActive = "Y";
+        this.registerDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }
-
-
