@@ -33,25 +33,25 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**","/css/**","/login","/user", "/admin/**").permitAll()
                         .anyRequest().authenticated())
-                        .oauth2Login(oauth2 -> oauth2
-                                .userInfoEndpoint(userInfo -> userInfo
-                                        .userService(customOAuth2UserService)
-                                )
-                                .failureHandler((request, response, exception) -> {
-                                        exception.printStackTrace();
-                                })
-                                .loginPage("/login") // Custom login page Url
-                                .defaultSuccessUrl("/home", true)
-                                .authorizationEndpoint(endpoint -> endpoint
-                                        .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
-                                ))
-                        .logout(auth -> auth
-                                .logoutSuccessUrl("/login")
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
                         )
-                        .csrf(auth -> auth.disable());
+                        .failureHandler((request, response, exception) -> {
+                            exception.printStackTrace();
+                        })
+                        .loginPage("/login") // Custom login page Url
+                        .defaultSuccessUrl("/home", true)
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
+                        ))
+                .logout(auth -> auth
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                )
+                .csrf(auth -> auth.disable());
         return httpSecurity.build();
     }
 
