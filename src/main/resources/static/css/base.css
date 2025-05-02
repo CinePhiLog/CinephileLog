@@ -11,14 +11,15 @@ a {
 }
 
 .title {
-    font-weight: bold;
     font-size: 20px;
-    margin-top: 30px;
-    margin-bottom: 30px;
 }
 
-.text {
+.bold-text {
     font-weight: bold;
+}
+
+.white-text {
+    color: white;
 }
 
 .img {
@@ -57,6 +58,17 @@ a {
     cursor: pointer;
 }
 
+.nav-menu-button {
+    font-weight: bold;
+    background:none;
+    border:none;
+}
+
+.nav-menu-button:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
 .member-badge-icon {
     width: 50px;
     height: auto;
@@ -76,31 +88,11 @@ a {
     background-color: rgba(31, 27, 130, 0.65);
 }
 
-.normal-button {
-    font-weight: bold;
-    width: 100px;
-    height: 40px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 7px;
-    cursor: pointer;
+.btn {
+    min-width: 80px;
 }
 
-.normal-button:hover {
-    transform: scale(1.1);
-}
-
-.submit-button {
-    font-weight: bold;
-    background:none;
-    border:none;
-}
-
-.submit-button:hover {
-    text-shadow: 1px 1px 2px grey;
-    cursor: pointer;
-}
-
-.white-text {
-    color: white;
+.text-soft-danger {
+    color: #801d1d !important;
+    font-weight: normal;
 }

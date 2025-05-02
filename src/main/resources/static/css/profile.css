@@ -1,3 +1,7 @@
+body {
+    font-weight: bold;
+}
+
 .badge-img {
     height: auto;
     width: 100%;
@@ -12,7 +16,7 @@
     border-radius: 10px;
 }
 
-.form-content > * {
-    height: 50px;
-    align-content: center;
+#checked-icon {
+    height: 30px;
+    width: auto;
 }
