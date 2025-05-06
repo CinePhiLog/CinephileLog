@@ -61,4 +61,8 @@ public class UserService {
     public User getUserByNickname(String nickname) {
         return userRepository.findByNickname(nickname);
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
