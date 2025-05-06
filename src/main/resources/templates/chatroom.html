@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/navigation-bar.css">
 <head>
     <meta charset="UTF-8">
     <title>채팅방</title>
@@ -12,9 +13,9 @@
         }
 
         #chat-container {
+            margin: 65px auto auto;
             width: 360px;
             height: 580px;
-            margin: auto;
             background: #f3f2f8;
             border-radius: 20px;
             display: flex;
@@ -119,6 +120,23 @@
     </style>
 </head>
 <body>
+
+<div id="nav-bar">
+    <div class="row row-center">
+        <div class="col-sm-3 logo">
+            <a href="/home">
+                <img src="/images/picture_logo.png"/>
+                <img src="/images/logo.png"/>
+            </a>
+        </div>
+        <div class="col-sm-9 nav-menu">
+            <a href="/profile" class="menu-link">내 프로필</a>
+            <form th:action="@{/userLogout}" method="post">
+                <button type="submit" class="nav-menu-button">로그아웃</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div id="chat-container">
     <div id="chat-messages"></div>

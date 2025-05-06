@@ -31,7 +31,8 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**","/css/**","/login","/user", "/admin/**").permitAll()
-                        .anyRequest().authenticated())
+                        // .anyRequest().authenticated())
+                        .anyRequest().permitAll()) // 모든 요청에 permitAll() 적용
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
