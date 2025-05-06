@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -26,8 +25,7 @@ public class WebSecurityConfig {
 
     //Configure web-based security for specific HTTP requests
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           OAuth2AuthorizationRequestResolver customResolver) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**","/css/**","/login","/user", "/admin/**").permitAll()
@@ -41,14 +39,11 @@ public class WebSecurityConfig {
                         })
                         .loginPage("/login") // Custom login page Url
                         .defaultSuccessUrl("/checkNickname", true)
-                        .authorizationEndpoint(endpoint -> endpoint
-                                .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
-                        ))
-                .logout(auth -> auth
+                )
+                .logout(logout -> logout
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                        .deleteCookies("JSESSIONID")
                 )
                 .csrf(auth -> auth.disable());
         return httpSecurity.build();
