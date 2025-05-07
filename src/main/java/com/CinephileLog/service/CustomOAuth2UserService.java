@@ -4,7 +4,6 @@ import com.CinephileLog.domain.Role;
 import com.CinephileLog.domain.User;
 import com.CinephileLog.dto.AddUserRequest;
 import com.CinephileLog.dto.CustomOAuth2User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -12,32 +11,15 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserService userService;
 
-    @Value("${admin.emails}")
-    private String adminEmailsString;
-
-    private List<String> adminEmails;
-
     public CustomOAuth2UserService(UserService userService) {
         this.userService = userService;
-    }
-
-    // adminEmails 리스트 초기화
-    @Value("${admin.emails}")
-    public void setAdminEmails(String adminEmailsString) {
-        if (adminEmailsString != null && !adminEmailsString.trim().isEmpty()) {
-            this.adminEmails = Arrays.asList(adminEmailsString.split(","));
-        } else {
-            this.adminEmails = List.of(); // 빈 리스트로 초기화
-        }
     }
 
     @Override
@@ -79,11 +61,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
             User user = userService.signUp(addUserRequest);
             user.setRole(Role.ROLE_USER);
-
-            // application.properties 파일에서 관리자 이메일 목록 읽어옴
-            if (adminEmails != null && adminEmails.contains(email)) {
-                user.setRole(Role.ROLE_ADMIN);
-            }
             userService.save(user);
             userRole = user.getRole();
 
