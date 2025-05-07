@@ -2,10 +2,6 @@
     display: flex;
 }
 
-.row-center {
-    align-items: center;
-}
-
 a {
     text-decoration: none !important;
 }
@@ -14,16 +10,18 @@ a {
     font-size: 20px;
 }
 
-.bold-text {
-    font-weight: bold;
-}
-
 .white-text {
     color: white;
 }
 
-.img {
-    margin: 30px;
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.site-name {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    color: black;
 }
 
 #main-area {
@@ -32,10 +30,55 @@ a {
     overflow: auto;
 }
 
+#nav-bar {
+    height: 65px;
+    background-color: #FFB800;
+    align-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    caret-color: transparent;
+    border-radius: 50px 50px 0 0;
+}
+
+.nav-menu > * {
+    font-weight: bold;
+    font-size: 14px;
+    float: right;
+    padding: 10px;
+    text-align: center;
+    color: black;
+}
+
+.nav-menu > img {
+    padding: 0px;
+}
+
+.menu-link:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.nav-menu-button {
+    font-weight: bold;
+    background:none;
+    border:none;
+}
+
+.nav-menu-button:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.member-badge-icon {
+    width: 50px;
+    height: auto;
+}
+
 #main-content {
-    height: calc(100vh - 50px);
+    height: calc(100vh - 65px);
     caret-color: transparent;
     padding: 50px;
+    border-radius: 0 0 50px 50px;
 }
 
 .solid-bg {
