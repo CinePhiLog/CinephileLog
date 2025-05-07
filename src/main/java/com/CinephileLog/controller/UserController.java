@@ -1,12 +1,12 @@
 package com.CinephileLog.controller;
 
+import com.CinephileLog.domain.User;
+import com.CinephileLog.dto.AddUserRequest;
 import com.CinephileLog.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -14,9 +14,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping("api/user/{id}")
-    public ResponseEntity<Void> terminateUser(@PathVariable("id") long userId) {
-        userService.terminateUserById(userId);
+    @PutMapping("api/user/{id}")        // 업데이트
+    public ResponseEntity<Void> updateUser(@PathVariable("id") long userId, @RequestBody AddUserRequest addUserRequest) {
+        userService.updateUserById(userId, addUserRequest);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("api/checkNickname")
+    public boolean checkNickname(@RequestBody String nickname) {
+        User user = userService.getUserByNickname(nickname);
+
+        if (user == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

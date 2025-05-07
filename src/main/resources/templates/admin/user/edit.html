@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>유저 관리</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="container">
+  <h1>유저 관리</h1>
+
+  <form th:action="@{/admin/users/update/{userId}(userId=${user.userId})}" method="post" th:object="${user}" onsubmit="return confirm('저장하시겠습니까?');">
+    <div class="form-group">
+      <label for="userId">ID:</label>
+      <input type="text" id="userId" th:field="*{userId}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" th:field="*{email}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="nickname">닉네임:</label>
+      <input type="text" id="nickname" th:field="*{nickname}">
+    </div>
+    <div class="form-group">
+      <label for="role">권한:</label>
+      <select id="role" th:field="*{role}">
+        <option value="ROLE_USER">일반 회원</option>
+        <option value="ROLE_ADMIN">관리자</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="point">포인트:</label>
+      <input type="number" id="point" th:field="*{point}">
+    </div>
+    <div class="form-group">
+      <label for="isActive">가입 여부:</label>
+      <select id="isActive" th:field="*{isActive}">
+        <option value="Y">Y</option>
+        <option value="N">N</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="grade">등급:</label>
+      <select id="grade" th:field="*{grade.gradeId}">
+        <option th:each="grade : ${grades}" th:value="${grade.gradeId}" th:text="${grade.gradeName}" th:selected="${user.grade.gradeId == grade.gradeId}"></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="registerDate">등록일:</label>
+      <input type="text" id="registerDate" th:field="*{registerDate}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="updatedDate">수정일:</label>
+      <input type="text" id="updatedDate" th:field="*{updatedDate}" readonly>
+    </div>
+
+    <div class="button-container" style="display: flex; gap: 10px; margin-top: 20px;">
+      <button type="submit">저장</button>
+  </form>
+
+  <form th:action="@{/admin/users/delete/{userId}(userId=${user.userId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+    <button type="submit">삭제</button>
+  </form>
+</div>
+
+<div class="button-container" style="margin-top: 20px;">
+  <a th:href="@{/admin/users}">유저 목록</a>
+</div>
+</div>
+</body>
+</html>

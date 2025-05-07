@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>관리자 홈</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <link rel="stylesheet" th:href="@{/css/navigation-bar.css}">
+  <style>
+    body {
+      margin: 0;
+    }
+    #nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 30px;
+      padding-right: 30px;
+      box-sizing: border-box;
+      height: 65px;
+      background-color: #FFB800;
+    }
+    #nav-bar .logo {
+      display: flex;
+      align-items: center;
+    }
+    #nav-bar .nav-menu {
+      display: flex;
+      align-items: center;
+    }
+    #nav-bar .nav-menu > * {
+      font-weight: bold;
+      padding: 5px;
+      text-align: center;
+      color: black;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    #nav-bar .nav-menu > *:not(:first-child) {
+      margin-left: 5px;
+    }
+    #nav-bar .nav-menu .member-info {
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+    }
+    #nav-bar .nav-menu .member-info span {
+      margin-left: 3px;
+      font-size: 0.9em;
+    }
+    #nav-bar .nav-menu .menu-link {
+      text-decoration: none;
+      color: black;
+      font-size: 0.9em;
+    }
+    #nav-bar .nav-menu button {
+      font-weight: bold;
+      background: none;
+      border: none;
+      color: black;
+      cursor: pointer;
+      padding: 5px 8px;
+      height: auto;
+      font-size: 0.9em;
+    }
+    #nav-bar .nav-menu button:hover {
+      text-shadow: 1px 1px 2px grey;
+    }
+    .member-badge-icon {
+      width: 25px;
+      height: auto;
+      margin-right: 3px;
+    }
+    .content-wrapper {
+      padding-top: 65px;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: calc(100vh - 65px);
+      box-sizing: border-box;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 80%;
+      max-width: 600px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .button-link {
+      display: inline-block;
+      padding: 15px 30px;
+      text-decoration: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      font-size: 1.2em;
+    }
+
+    .button-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div id="nav-bar">
+  <div class="row row-center" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <div class="col-sm-3 logo">
+      <a href="/home" style="display: flex; align-items: center;">
+        <img src="/images/picture_logo.png" style="height: 40px; margin-right: 5px;"/>
+        <img src="/images/logo.png" style="height: 40px;"/>
+      </a>
+    </div>
+    <div class="col-sm-9 nav-menu" style="display: flex; align-items: center; justify-content: flex-end;">
+      <a href="/profile" class="menu-link" style="font-size: 0.8em; margin-left: 5px;">내 프로필</a>
+      <form th:action="@{/userLogout}" method="post" style="margin-left: 5px;">
+        <button type="submit" class="nav-menu-button" style="font-size: 0.8em; padding: 5px 8px;">로그아웃</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="content-wrapper">
+  <div class="container">
+    <h1>관리자 홈</h1>
+    <a th:href="@{/admin/users}" class="button-link">유저 관리</a>
+    <a th:href="@{/admin/reviews}" class="button-link">리뷰 관리</a>
+  </div>
+</div>
+</body>
+</html>

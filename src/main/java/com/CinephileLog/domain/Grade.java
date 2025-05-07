@@ -1,12 +1,15 @@
 package com.CinephileLog.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor
-@Getter
 @Entity
+@Table (name = "Grade")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Grade {
     @Id
     @Column(updatable = false)
@@ -16,7 +19,7 @@ public class Grade {
     private String gradeName;
 
     @Column(nullable = false)
-    private String minPoint;
+    private Long minPoint;
 
     @Column(nullable = false)
     private String description;

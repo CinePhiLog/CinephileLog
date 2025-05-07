@@ -1,5 +1,6 @@
 package com.CinephileLog.service;
 
+import com.CinephileLog.domain.Role;
 import com.CinephileLog.domain.User;
 import com.CinephileLog.dto.AddUserRequest;
 import com.CinephileLog.dto.CustomOAuth2User;
@@ -29,41 +30,52 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String email = null;
         String nickname = null;
 
-        Map<String, Object> newAttributes = new HashMap<>();
-
-        Map<String, Object> attributes = oAuth2User.getAttributes();
+        Map<String, Object> originalAttributes = oAuth2User.getAttributes();
+        Map<String, Object> newAttributes = new HashMap<>(originalAttributes);
 
         if (provider.equalsIgnoreCase("kakao")) {
-            Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-
+            Map<String, Object> properties = (Map<String, Object>) originalAttributes.get("properties");
+            Map<String, Object> kakaoAccount = (Map<String, Object>) originalAttributes.get("kakao_account");
             email = (String) kakaoAccount.get("email");
             nickname = (String) properties.get("nickname");
+            newAttributes.put("email", email);
+            newAttributes.put("nickname", nickname);
         } else {
-            email = (String) attributes.get("email");
-            nickname = (String) attributes.get("name");
+            email = (String) originalAttributes.get("email");
+            nickname = (String) originalAttributes.get("name");
+            newAttributes.put("email", email);
+            newAttributes.put("nickname", nickname);
         }
 
         if (email == null || nickname == null) {
             throw new OAuth2AuthenticationException("Get user information from " + provider + " failed");
         }
 
-        AddUserRequest addUserRequest = new AddUserRequest();
-        addUserRequest.setEmail(email);
-        addUserRequest.setNickname(nickname);
-        addUserRequest.setProvider(provider);
+        User activeUser = userService.getActiveUserByEmailAndProvider(email, provider);
+        Role userRole;
 
-        User user = userService.logIn(addUserRequest);
+        if (activeUser == null) {
+            AddUserRequest addUserRequest = new AddUserRequest();
+            addUserRequest.setEmail(email);
+            addUserRequest.setProvider(provider);
 
-        newAttributes.put("userId", user.getUserId());
-        newAttributes.put("email", user.getEmail());
-        newAttributes.put("nickname", user.getNickname());
+            User user = userService.signUp(addUserRequest);
+            user.setRole(Role.ROLE_USER);
+            userService.save(user);
+            userRole = user.getRole();
+
+            newAttributes.put("userId", user.getUserId());
+            newAttributes.put("role", user.getRole());
+        } else {
+            newAttributes.put("userId", activeUser.getUserId());
+            newAttributes.put("role", activeUser.getRole());
+            userRole = activeUser.getRole();
+        }
 
         return new CustomOAuth2User(
                 newAttributes,
-                oAuth2User.getAuthorities(),
+                userRole,
                 nickname
         );
     }
-
 }

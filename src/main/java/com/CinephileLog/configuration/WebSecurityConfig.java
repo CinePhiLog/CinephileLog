@@ -6,10 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
 @Configuration
 @EnableWebSecurity
@@ -27,33 +25,28 @@ public class WebSecurityConfig {
 
     //Configure web-based security for specific HTTP requests
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity,
-                                           OAuth2AuthorizationRequestResolver customResolver) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/images/**","/css/**","/login","/user").permitAll()
-                        .anyRequest().authenticated())
-                        .oauth2Login(oauth2 -> oauth2
-                                .userInfoEndpoint(userInfo -> userInfo
-                                        .userService(customOAuth2UserService)
-                                )
-                                .failureHandler((request, response, exception) -> {
-                                        exception.printStackTrace();
-                                })
-                                .loginPage("/login") // Custom login page Url
-                                .defaultSuccessUrl("/home", true)
-                                .authorizationEndpoint(endpoint -> endpoint
-                                        .authorizationRequestResolver(customResolver)   //call resolver to prompt login to OAuth2 everytime
-                                ))
-                        .logout(auth -> auth
-                                .logoutSuccessUrl("/login")
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .deleteCookies("JSESSIONID")    //clear local JSESSIONID
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // /admin/** 경로는 ROLE_ADMIN 권한 필요
+                        .anyRequest().permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
                         )
-                        .csrf(auth -> auth.disable());
+                        .failureHandler((request, response, exception) -> {
+                            exception.printStackTrace();
+                        })
+                        .loginPage("/login") // Custom login page Url
+                        .defaultSuccessUrl("/checkNickname", true)
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
+                .csrf(auth -> auth.disable());
         return httpSecurity.build();
     }
-
-
 }

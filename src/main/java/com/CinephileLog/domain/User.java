@@ -1,61 +1,60 @@
 package com.CinephileLog.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
-@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String provider;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 300)
     private String email;
 
-    @Column(nullable = false)
+    @Column(length = 100)
     private String nickname;
 
-    @Column(insertable = false)
-    private String point;
-
-    @Column(insertable = false)
-    private String isActive;
-
-    @CreatedDate
-    private LocalDateTime registerDate;
-
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
-
-    @ManyToOne
-    @JoinColumn(name="roleId")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "ENUM('ROLE_ADMIN','ROLE_USER') DEFAULT 'ROLE_USER'")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name="gradeId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grade_id", nullable = false)
     private Grade grade;
 
-    public User(String provider, String email, String nickname, Role role, Grade grade) {
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
+    private Long point;
+
+    @Column(nullable = false, length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'Y'")
+    private String isActive;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime registerDate;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime updatedDate;
+
+    public User(String provider, String email, String nickname, Grade grade) {
+        this.provider = provider;
         this.email = email;
         this.nickname = nickname;
-        this.role = role;
         this.grade = grade;
-        this.provider = provider;
+        this.role = Role.ROLE_USER;
+        this.isActive = "Y";
+        this.registerDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 }

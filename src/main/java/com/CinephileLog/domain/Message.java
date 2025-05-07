@@ -21,4 +21,3 @@ public class Message {
     @Column(columnDefinition = "TEXT")
     private String content;
 }
-
