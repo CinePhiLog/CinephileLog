@@ -1,0 +1,66 @@
+#nav-bar {
+    height: 65px;
+    background-color: #FFB800;
+    align-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    caret-color: transparent;
+}
+
+#nav-bar .logo {
+    display: flex;
+    align-items: center;
+}
+
+#nav-bar .logo img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+#nav-bar .nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+#nav-bar .nav-menu > * {
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    color: black;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#nav-bar .nav-menu > *:not(:first-child) {
+    margin-left: 15px;
+}
+
+#nav-bar .nav-menu .member-info {
+    margin-right: 20px;
+}
+
+#nav-bar .nav-menu .member-info span {
+    margin-left: 5px;
+}
+
+#nav-bar .nav-menu button {
+    font-weight: bold;
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 0;
+    height: auto;
+}
+
+#nav-bar .nav-menu button:hover {
+    text-shadow: 1px 1px 2px grey;
+}
+
+.member-badge-icon {
+    width: 50px;
+    height: auto;
+}

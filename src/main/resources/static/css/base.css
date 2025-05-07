@@ -32,48 +32,6 @@ a {
     overflow: auto;
 }
 
-#nav-bar {
-    height: 50px;
-    background-color: #FFB800;
-    align-content: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    caret-color: transparent;
-}
-
-.nav-menu > * {
-    font-weight: bold;
-    float: right;
-    padding: 10px;
-    text-align: center;
-    color: black;
-}
-
-.nav-menu > img {
-    padding: 0px;
-}
-
-.menu-link:hover {
-    text-shadow: 1px 1px 2px grey;
-    cursor: pointer;
-}
-
-.nav-menu-button {
-    font-weight: bold;
-    background:none;
-    border:none;
-}
-
-.nav-menu-button:hover {
-    text-shadow: 1px 1px 2px grey;
-    cursor: pointer;
-}
-
-.member-badge-icon {
-    width: 50px;
-    height: auto;
-}
-
 #main-content {
     height: calc(100vh - 50px);
     caret-color: transparent;
