@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,12 +16,14 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-
 
 @Controller
 public class UserViewController {
@@ -38,11 +42,19 @@ public class UserViewController {
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
-    @PostMapping("/userLogout")
-    public void logOut(HttpServletRequest request,
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+
+    @GetMapping("/postLogout")
+    public String postLogout() {
+        return "login";
+    }
+
+    @GetMapping("/userLogout")
+    public void logOutProcess(HttpServletRequest request,
                        HttpServletResponse response,
                        @AuthenticationPrincipal OAuth2User user,
-                       Authentication authentication) throws IOException {
+                       Authentication authentication) throws IOException, InterruptedException {
         if (user == null) {
             response.sendRedirect("/login"); //If the user is not authenticated (OAuth2User is null), redirect to login page
             return;
@@ -58,21 +70,32 @@ public class UserViewController {
             String logoutRedirectUri = "http://localhost:8080/postLogout";
             String encodedLogoutRedirectUri = URLEncoder.encode(logoutRedirectUri, StandardCharsets.UTF_8);
 
-            //Define logout URL per provider and redirect
-            String logoutUrl = switch (provider) {
-                case "google" -> "https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=" + encodedLogoutRedirectUri;
-                case "kakao" -> "https://kauth.kakao.com/oauth/logout?client_id=" + clientId + "&logout_redirect_uri=" + encodedLogoutRedirectUri;
-                case "facebook" -> logoutRedirectUri;   //don't rely on Facebook's logout as it doesn't redirect back to postLogout
-                default -> encodedLogoutRedirectUri;
-            };
+            //kakao need to redirect to its logout uri to fully log out
+            if (provider.equals("kakao")) {
+                logoutRedirectUri = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId + "&logout_redirect_uri=" + encodedLogoutRedirectUri;
+            }
 
-            response.sendRedirect(logoutUrl);
+            //Log out google via API - to log out from this service only, not all google accounts in the browser
+            if (provider.equals("google")) {
+                OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                        provider, oauth2Token.getName());
+
+                if (client != null) {
+                    String accessToken = client.getAccessToken().getTokenValue();
+
+                    //Revoke token
+                    HttpClient httpClient = HttpClient.newHttpClient();
+                    HttpRequest revoke = HttpRequest.newBuilder()
+                            .uri(URI.create("https://oauth2.googleapis.com/revoke?token=" + accessToken))
+                            .header("Content-Type", "application/x-www-form-urlencoded")
+                            .POST(HttpRequest.BodyPublishers.noBody())
+                            .build();
+                    httpClient.send(revoke, HttpResponse.BodyHandlers.discarding());
+                }
+            }
+
+            response.sendRedirect(logoutRedirectUri);
         }
-    }
-
-    @GetMapping("/postLogout")
-    public String postLogout() {
-        return "login";
     }
 
     @GetMapping("/checkNickname")

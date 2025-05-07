@@ -65,9 +65,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             userRole = user.getRole();
 
             newAttributes.put("userId", user.getUserId());
+            newAttributes.put("email", user.getEmail());
+            newAttributes.put("nickname", user.getNickname());
             newAttributes.put("role", user.getRole());
         } else {
             newAttributes.put("userId", activeUser.getUserId());
+            newAttributes.put("email", activeUser.getEmail());
+            newAttributes.put("nickname", activeUser.getNickname());
             newAttributes.put("role", activeUser.getRole());
             userRole = activeUser.getRole();
         }
