@@ -36,7 +36,7 @@ public class User {
     private Grade grade;
 
     @Column(columnDefinition = "BIGINT DEFAULT 0")
-    private Long point;
+    private Long point = 0L;
 
     @Column(nullable = false, length = 1, columnDefinition = "VARCHAR(1) DEFAULT 'Y'")
     private String isActive;

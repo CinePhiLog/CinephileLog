@@ -26,12 +26,8 @@ if (terminateUserButton) {
                     isActive: "N"
                 })
             }).then (() => {
-                fetch(`/userLogout`,{
-                    method: 'POST'
-                }).then(() => {
-                    alert("탈퇴 되었습니다");
-                    location.replace('/login');
-                })
+                alert("탈퇴 되었습니다");
+                window.location.href = '/userLogout';
             })
         }
     })

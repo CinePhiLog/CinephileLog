@@ -38,8 +38,13 @@ public class UserViewController {
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
-    @PostMapping("/userLogout")
-    public void logOut(HttpServletRequest request,
+    @GetMapping("/postLogout")
+    public String postLogout() {
+        return "login";
+    }
+
+    @GetMapping("/userLogout")
+    public void logOutProcess(HttpServletRequest request,
                        HttpServletResponse response,
                        @AuthenticationPrincipal OAuth2User user,
                        Authentication authentication) throws IOException {
@@ -68,11 +73,6 @@ public class UserViewController {
 
             response.sendRedirect(logoutUrl);
         }
-    }
-
-    @GetMapping("/postLogout")
-    public String postLogout() {
-        return "login";
     }
 
     @GetMapping("/checkNickname")

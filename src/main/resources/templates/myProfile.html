@@ -17,7 +17,7 @@
             </a>
             <div class="col-9 nav-menu">
                 <span class="menu-link mr-2" th:action="@{/profile}">내 프로필</span>
-                <form th:action="@{/userLogout}" method="post">
+                <form th:action="@{/userLogout}" method="get">
                     <button type="submit" class="nav-menu-button">로그아웃</button>
                 </form>
                 <span th:text="${user.nickname}"></span>
@@ -82,7 +82,7 @@
                 <!-- Buttons -->
                 <div class="mt-4 pl-4 align-items-center">
                     <button type="button" id="terminate-user-btn" class="btn btn-danger">탈퇴</button>
-                    <button type="button" id="save-user-btn" class="btn btn-primary">저장</button>
+                    <button type="button" id="save-user-btn" class="btn btn-primary mr-3">저장</button>
                     <button type="button" id="cancel-user-btn" class="btn btn-secondary">취소</button>
                 </div>
             </div>
