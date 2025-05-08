@@ -4,6 +4,8 @@ import com.CinephileLog.movie.domain.Movie;
 import com.CinephileLog.movie.dto.MovieResponse;
 import com.CinephileLog.movie.repository.MovieRepository;
 import java.util.List;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -30,5 +32,11 @@ public class MovieService {
 
         // 여기서 Session 살아있을 때 MovieResponse 변환
         return new MovieResponse(movie);
+    }
+
+    public MovieResponse getMovieDetail(Long id) {
+        return movieRepository.findById(id)
+                .map(movie -> new MovieResponse(movie))
+                .orElseThrow(() -> new EntityNotFoundException("영화를 찾을 수 없습니다. id=" + id));
     }
 }
