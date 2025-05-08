@@ -32,7 +32,9 @@ CREATE TABLE user (
     is_active VARCHAR(1) NOT NULL DEFAULT 'Y',
     register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (grade_id) REFERENCES grade(grade_id)
+    FOREIGN KEY (grade_id) REFERENCES grade(grade_id),
+    last_login TIMESTAMP NULL DEFAULT NULL,
+    login_count BIGINT DEFAULT 0
 );
 
 -- 장르
