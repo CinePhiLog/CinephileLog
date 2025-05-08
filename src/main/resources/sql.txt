@@ -139,15 +139,6 @@ CREATE TABLE playlist_movie (
     FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
 );
 
--- 리뷰좋아요
-CREATE TABLE review_like (
-    like_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT NOT NULL,
-    review_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (review_id) REFERENCES review(review_id) ON DELETE CASCADE
-);
-
 -- 기본 등급 데이터
 INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (1, 'jelly', 0, '');
 INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (2, 'coke', 10, '');
