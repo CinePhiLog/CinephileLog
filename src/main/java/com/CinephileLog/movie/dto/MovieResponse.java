@@ -2,6 +2,7 @@ package com.CinephileLog.movie.dto;
 
 import com.CinephileLog.movie.domain.Genre;
 import com.CinephileLog.movie.domain.Movie;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class MovieResponse {
     private String title;
     private LocalDate releaseDate;
     private String posterUrl;
-    private int rating;
+    private BigDecimal rating;
     private String synopsis;
     private String director;
     private String cast;

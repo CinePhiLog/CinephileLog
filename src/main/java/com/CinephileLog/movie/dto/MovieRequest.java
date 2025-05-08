@@ -2,6 +2,7 @@ package com.CinephileLog.movie.dto;
 
 import com.CinephileLog.movie.domain.Genre;
 import com.CinephileLog.movie.domain.Movie;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;

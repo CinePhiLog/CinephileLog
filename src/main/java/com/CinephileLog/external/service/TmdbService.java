@@ -9,6 +9,7 @@ import com.CinephileLog.movie.domain.Movie;
 import com.CinephileLog.movie.repository.GenreRepository;
 import com.CinephileLog.movie.repository.MovieRepository;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +65,7 @@ public class TmdbService {
                     dto.getTitleOriginal(),
                     LocalDate.parse(dto.getReleaseDate()),
                     "https://image.tmdb.org/t/p/w500" + dto.getPosterUrl(),
-                    0,
+                    BigDecimal.valueOf(0.0),
                     dto.getSynopsis(),
                     director,
                     cast,
