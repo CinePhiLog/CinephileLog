@@ -27,12 +27,15 @@ public class Movie implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
     private Long id;
 
     @Column(name = "title")
     private String title;
+
+    @Column(name = "title_original")
+    private String titleOriginal;
+
 
     @Column(name = "release_date")
     private LocalDate releaseDate;

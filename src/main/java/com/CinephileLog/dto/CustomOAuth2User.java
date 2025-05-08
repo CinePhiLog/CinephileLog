@@ -41,14 +41,6 @@ public class CustomOAuth2User implements OAuth2User {
         return (String) attributes.get("email");
     }
 
-    public String getNickname() {
-        return (String) attributes.get("nickname");
-    }
-
-    public String getFullName() {
-        return (String) attributes.get("name");
-    }
-
     public Role getRole() {
         return (Role) attributes.get("role");
     }

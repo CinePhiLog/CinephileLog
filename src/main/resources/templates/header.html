@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div th:fragment="siteHeader">
+    <div id="nav-bar">
+        <div class="row">
+            <a href="/home" class="col-3 d-flex align-items-center">
+                <img src="/images/picture_logo.png" class="ml-2 logo"/>
+                <h4 class="font-weight-bold site-name">CinePhiLog</h4>
+            </a>
+            <div th:if="${showMenu}" class="col-9 nav-menu">
+                <span class="menu-link mr-2" th:action="@{/profile}">내 프로필</span>
+                <form th:if="${user.userId} != null" th:action="@{/userLogout}" method="get">
+                    <button type="submit" class="nav-menu-button">로그아웃</button>
+                </form>
+                <form th:if="${user.userId} == null" th:action="@{/login}" method="get">
+                    <button type="submit" class="nav-menu-button">로그인</button>
+                </form>
+                <span th:text="${user.nickname}"></span>
+                <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="member-badge-icon"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
