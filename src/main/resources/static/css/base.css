@@ -97,3 +97,29 @@ a {
     color: #801d1d !important;
     font-weight: normal;
 }
+
+.border-end-img-vertical {
+    position: absolute;
+    transform: translateX(50%);
+    height: 60px;
+    right: 1px;
+}
+
+.border-end-img-top {
+    top: -40px;
+}
+
+.border-end-img-bottom {
+    bottom: -40px;
+}
+
+.border-end-img-horizontal {
+    position: absolute;
+    transform: translateY(50%);
+    height: 60px;
+    bottom: -1px;
+}
+
+.border-end-img-right {
+    right: -40px;
+}

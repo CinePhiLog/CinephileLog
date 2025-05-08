@@ -62,6 +62,7 @@ public class TmdbService {
             Movie movie = new Movie(
                     null,
                     dto.getTitle(),
+                    dto.getTitleOriginal(),
                     LocalDate.parse(dto.getReleaseDate()),
                     "https://image.tmdb.org/t/p/w500" + dto.getPosterUrl(),
                     BigDecimal.valueOf(0.0),
