@@ -1,0 +1,133 @@
+-- 테이블 삭제
+DROP TABLE IF EXISTS playlist_movie;
+DROP TABLE IF EXISTS playlist;
+DROP TABLE IF EXISTS message;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS user_chatting_room;
+DROP TABLE IF EXISTS movie_genre;
+DROP TABLE IF EXISTS chatting_room;
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS grade;
+
+-- 회원 등급
+CREATE TABLE grade (
+    grade_id BIGINT PRIMARY KEY,
+    grade_name VARCHAR(100) NOT NULL,
+    min_point BIGINT NOT NULL,
+    description TEXT
+);
+
+-- 회원
+CREATE TABLE user (
+    user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    provider VARCHAR(20) NOT NULL,
+    email VARCHAR(300) NOT NULL,
+    nickname VARCHAR(100),
+    role ENUM('ROLE_ADMIN','ROLE_USER') NOT NULL DEFAULT 'ROLE_USER',
+    grade_id BIGINT NOT NULL,
+    point BIGINT DEFAULT 0,
+    is_active VARCHAR(1) NOT NULL DEFAULT 'Y',
+    register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (grade_id) REFERENCES grade(grade_id)
+);
+
+-- 장르
+CREATE TABLE genre (
+    genre_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL
+);
+
+-- 영화
+CREATE TABLE movie (
+    movie_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(250) NOT NULL,
+    release_date DATE,
+    poster_url VARCHAR(250),
+    rating INT DEFAULT 0,
+    synopsis TEXT,
+    director TEXT,
+    cast TEXT
+);
+
+-- 영화-장르 (N:M)
+CREATE TABLE movie_genre (
+    movie_id BIGINT NOT NULL,
+    genre_id BIGINT NOT NULL,
+    PRIMARY KEY (movie_id, genre_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(movie_id),
+    FOREIGN KEY (genre_id) REFERENCES genre(genre_id)
+);
+
+-- 채팅방
+CREATE TABLE chatting_room (
+    room_id BIGINT NOT NULL AUTO_INCREMENT,
+    movie_id BIGINT NOT NULL,
+    room_name VARCHAR(250),
+    created_date TIMESTAMP NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (room_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+);
+
+-- 유저-채팅방 (입장 정보)
+CREATE TABLE user_chatting_room (
+    user_id BIGINT NOT NULL,
+    room_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (room_id) REFERENCES chatting_room(room_id)
+);
+
+-- 메시지
+CREATE TABLE message (
+    message_id BIGINT NOT NULL AUTO_INCREMENT,
+    room_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    send_time TIMESTAMP NOT NULL,
+    content TEXT NOT NULL,
+    PRIMARY KEY (message_id),
+    FOREIGN KEY (room_id) REFERENCES chatting_room(room_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+-- 영화 리뷰
+CREATE TABLE review (
+    review_id BIGINT NOT NULL AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    movie_id BIGINT NOT NULL,
+    rating decimal(2,1) NOT NULL,
+    content TEXT,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    like_count BIGINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+);
+
+-- 플레이리스트
+CREATE TABLE playlist (
+    playlist_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+-- 플레이리스트-영화 (N:M)
+CREATE TABLE playlist_movie (
+    playlist_id BIGINT NOT NULL,
+    movie_id BIGINT NOT NULL,
+    PRIMARY KEY (playlist_id, movie_id),
+    FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+);
+
+-- 기본 등급 데이터
+INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (1, 'jelly', 0, '');
+INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (2, 'coke', 10, '');
+INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (3, 'nachos', 100, '');
+INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (4, 'hotdog', 1000, '');
+INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (5, 'popcorn', 10000, '');
