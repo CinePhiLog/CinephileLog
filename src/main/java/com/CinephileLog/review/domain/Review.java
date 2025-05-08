@@ -46,7 +46,7 @@ public class Review {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    @Column(precision = 2, scale = 1)  // ex) 5.0
+    @Column(precision = 3, scale = 1)
     private BigDecimal rating;
 
     @Column(nullable = false)

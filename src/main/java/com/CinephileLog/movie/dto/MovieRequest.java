@@ -26,7 +26,7 @@ public class MovieRequest {
     public Movie toEntity(Set<Genre> genres) {
         return new Movie(
                 null, title, titleOriginal, releaseDate,
-                posterUrl, 0, synopsis,
+                posterUrl, BigDecimal.valueOf(0.0), synopsis,
                 director, cast, genres
         );
     }

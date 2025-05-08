@@ -45,6 +45,8 @@ public class ReviewService {
             throw new IllegalArgumentException("이미 해당 영화에 대한 리뷰를 작성했습니다");
         }
 
+        validateRating(request.getRating());
+
         Review savedReview = reviewRepository.save(request.toEntity(user, movie));
 
         updateMovieRating(movie);
@@ -146,6 +148,7 @@ public class ReviewService {
         if(review == null) {
             throw new NoSuchElementException("해당하는 리뷰 없음");
         }
+        validateRating(request.getRating());
 
         review.setContent(request.getContent());
         review.setRating(request.getRating());
@@ -174,5 +177,12 @@ public class ReviewService {
         log.info("영화 평점 업데이트: {}", movie.getRating());
 
         movieRepository.save(movie);
+    }
+
+    // 평점 유효성 검사
+    private void validateRating(BigDecimal rating) {
+        if(rating.compareTo(BigDecimal.ZERO) < 0 || rating.compareTo(BigDecimal.TEN) > 0) {
+            throw new IllegalArgumentException("평점은 0.0에서 10.0 사이여야 함");
+        }
     }
 }
