@@ -2,6 +2,8 @@ package com.CinephileLog.external.service;
 
 import com.CinephileLog.movie.domain.Movie;
 import com.CinephileLog.movie.repository.MovieRepository;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,10 @@ public class TmdbApiClient {
             movie.setReleaseDate(data.get("release_date") != null ? LocalDate.parse((String) data.get("release_date")) : null);
             movie.setPosterUrl((String) data.get("poster_path"));
             movie.setSynopsis((String) data.get("overview"));
-            movie.setRating((int) Math.round(((Number) data.get("vote_average")).doubleValue()));
+
+            BigDecimal voteAverage = new BigDecimal(((Number) data.get("vote_average")).doubleValue());
+            BigDecimal roundedRating = voteAverage.setScale(1, RoundingMode.HALF_UP); // 소수점 한 자리까지 반올림
+            movie.setRating(roundedRating);
 
             return Optional.of(movie);
 
