@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MovieRequest {
     private String title;
+    private String titleOriginal;
     private LocalDate releaseDate;
     private String posterUrl;
     private String synopsis;
@@ -23,7 +24,7 @@ public class MovieRequest {
 
     public Movie toEntity(Set<Genre> genres) {
         return new Movie(
-                null, title, releaseDate,
+                null, title, titleOriginal, releaseDate,
                 posterUrl, 0, synopsis,
                 director, cast, genres
         );
