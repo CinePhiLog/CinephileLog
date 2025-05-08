@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>관리자 홈</title>
   <link rel="stylesheet" th:href="@{/css/admin.css}">
@@ -43,7 +43,7 @@
     #nav-bar .nav-menu > *:not(:first-child) {
       margin-left: 5px;
     }
-    #nav-bar .nav-menu .member-info {
+    #nav-bar .nav-menu {
       margin-right: 10px;
       display: flex;
       align-items: center;
@@ -69,11 +69,6 @@
     }
     #nav-bar .nav-menu button:hover {
       text-shadow: 1px 1px 2px grey;
-    }
-    .member-badge-icon {
-      width: 25px;
-      height: auto;
-      margin-right: 3px;
     }
     .content-wrapper {
       padding-top: 65px;
@@ -126,12 +121,11 @@
     <div class="col-sm-3 logo">
       <a href="/home" style="display: flex; align-items: center;">
         <img src="/images/picture_logo.png" style="height: 40px; margin-right: 5px;"/>
-        <img src="/images/logo.png" style="height: 40px;"/>
       </a>
     </div>
     <div class="col-sm-9 nav-menu" style="display: flex; align-items: center; justify-content: flex-end;">
       <a href="/profile" class="menu-link" style="font-size: 0.8em; margin-left: 5px;">내 프로필</a>
-      <form th:action="@{/userLogout}" method="post" style="margin-left: 5px;">
+      <form th:action="@{/userLogout}" method="get" style="margin-left: 5px;">
         <button type="submit" class="nav-menu-button" style="font-size: 0.8em; padding: 5px 8px;">로그아웃</button>
       </form>
     </div>

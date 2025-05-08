@@ -47,6 +47,11 @@ public class User {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedDate;
 
+    private LocalDateTime lastLogin;
+
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
+    private Long loginCount = 0L;
+
     public User(String provider, String email, String nickname, Grade grade) {
         this.provider = provider;
         this.email = email;
@@ -56,5 +61,7 @@ public class User {
         this.isActive = "Y";
         this.registerDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
+        this.lastLogin = null;
+        this.loginCount = 0L;
     }
 }
