@@ -2,8 +2,8 @@
     color: white;
     font-weight: bold;
     font-size: 36px;
-    margin-top: 80px;
-    margin-bottom: 80px;
+    margin-top: 20px;
+    margin-bottom: 160px;
 }
 
 .login-btn {
@@ -51,4 +51,19 @@
 /* Kakao Login Button Specific Styles */
 .kakao-login {
     background-color: #FEE500;
+}
+
+.content-img1 {
+    width: 100%;
+    max-width: 200px;
+    transform: rotate(350deg);
+    position: fixed;
+    margin-right: 120px;
+    margin-top: 50px;
+}
+
+.content-img2 {
+    width: 120%;
+    max-width: 300px;
+    transform: rotate(20deg);
 }

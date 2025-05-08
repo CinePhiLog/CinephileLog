@@ -21,3 +21,11 @@ body {
     height: 30px;
     width: auto;
 }
+
+.content-img {
+    width: 100%;
+    max-width: 100px;
+    transform: rotate(45deg);
+    position: fixed;
+    margin-right: -50px;
+}
