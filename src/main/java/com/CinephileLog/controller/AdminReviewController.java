@@ -1,8 +1,7 @@
 package com.CinephileLog.controller;
 
-import com.CinephileLog.domain.Review;
-import com.CinephileLog.dto.ReviewListDTO;
-import com.CinephileLog.service.ReviewService;
+import com.CinephileLog.review.dto.ReviewResponse;
+import com.CinephileLog.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +21,7 @@ public class AdminReviewController {
 
     @GetMapping
     public String listReviews(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<ReviewListDTO> reviews = reviewService.getAllReviewsWithNickname(keyword);
+        List<ReviewResponse> reviews = reviewService.getAllReviewsWithNickname(keyword);
         model.addAttribute("reviews", reviews);
         return "admin/review/list";
     }
@@ -35,14 +34,14 @@ public class AdminReviewController {
 
     @GetMapping("/{reviewId}")
     public String reviewDetail(@PathVariable Long reviewId, Model model) {
-        Review review = reviewService.getReviewById(reviewId);
+        ReviewResponse review = reviewService.getReviewById(reviewId);
         model.addAttribute("review", review);
         return "admin/review/detail";
     }
 
     @GetMapping("/search")
     public String searchReviews(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<ReviewListDTO> searchResults = reviewService.getAllReviewsWithNickname(keyword);
+        List<ReviewResponse> searchResults = reviewService.getAllReviewsWithNickname(keyword);
         model.addAttribute("reviews", searchResults);
         return "admin/review/list";
     }
