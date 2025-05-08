@@ -14,7 +14,7 @@ defaultMode();
 
 if (terminateUserButton) {
     terminateUserButton.addEventListener('click', e =>{
-        const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone");
+        const confirmed = confirm("탈퇴하시겠습니까?");
         if (confirmed) {
             let userId = document.getElementById("user-id").value;
             fetch(`/api/user/${userId}`,{

@@ -44,8 +44,9 @@ CREATE TABLE genre (
 
 -- 영화
 CREATE TABLE movie (
-    movie_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    movie_id BIGINT NOT NULL PRIMARY KEY,
     title VARCHAR(250) NOT NULL,
+    title_original VARCHAR(250) NOT NULL,
     release_date DATE,
     poster_url VARCHAR(250),
     rating INT DEFAULT 0,

@@ -18,6 +18,7 @@ import lombok.Setter;
 public class TmdbMovie {
     private Long id;
     private String title;
+    private String titleOriginal;
 
     @JsonProperty("release_date")
     private String releaseDate;
