@@ -10,7 +10,9 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
@@ -40,7 +43,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             nickname = (String) properties.get("nickname");
             newAttributes.put("email", email);
             newAttributes.put("nickname", nickname);
-        } else {
+        } else { // 다른 Provider 처리
             email = (String) originalAttributes.get("email");
             nickname = (String) originalAttributes.get("name");
             newAttributes.put("email", email);
@@ -69,6 +72,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             newAttributes.put("nickname", user.getNickname());
             newAttributes.put("role", user.getRole());
         } else {
+            activeUser.setLastLogin(LocalDateTime.now());
+            activeUser.setLoginCount(activeUser.getLoginCount() == null ? 1 : activeUser.getLoginCount() + 1);
+            userService.save(activeUser);
+
             newAttributes.put("userId", activeUser.getUserId());
             newAttributes.put("email", activeUser.getEmail());
             newAttributes.put("nickname", activeUser.getNickname());

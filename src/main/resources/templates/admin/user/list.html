@@ -99,40 +99,48 @@
     }
 
     th:nth-child(1), td:nth-child(1) {
-      width: 8%;
+      width: 5%;
       text-align: center;
     }
     th:nth-child(2), td:nth-child(2) {
-      width: 15%;
+      width: 10%;
       text-align: center;
     }
     th:nth-child(3), td:nth-child(3) {
-      width: 10%;
+      width: 8%;
       text-align: center;
     }
     th:nth-child(4), td:nth-child(4) {
-      width: 10%;
+      width: 8%;
       text-align: center;
     }
     th:nth-child(5), td:nth-child(5) {
-      width: 10%;
+      width: 8%;
       text-align: center;
     }
     th:nth-child(6), td:nth-child(6) {
-      width: 10%;
+      width: 8%;
       text-align: center;
     }
     th:nth-child(7), td:nth-child(7) {
-      width: 15%;
+      width: 12%;
       text-align: center;
     }
     th:nth-child(8), td:nth-child(8) {
-      width: 15%;
+      width: 12%;
+      text-align: center;
+    }
+    th:nth-child(9), td:nth-child(9) {
+      width: 12%;
+      text-align: center;
+    }
+    th:nth-child(10), td:nth-child(10) {
+      width: 8%;
       text-align: center;
     }
 
-    th:nth-child(9), td:nth-child(9) {
-      width: 10%;
+    th:nth-child(11), td:nth-child(11) {
+      width: 8%;
       text-align: center;
     }
 
@@ -180,6 +188,8 @@
       <th>가입 여부</th>
       <th>가입일</th>
       <th>수정일</th>
+      <th>최종 접속 시간</th>
+      <th>접속 횟수</th>
       <th>관리</th>
     </tr>
     </thead>
@@ -193,6 +203,8 @@
       <td style="text-align: center;"><span th:text="${user.isActive}"></span></td>
       <td><span th:text="${#temporals.format(user.registerDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
       <td><span th:text="${#temporals.format(user.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
+      <td><span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : '-'}"></span></td>
+      <td style="text-align: center;"><span th:text="${user.loginCount != null ? user.loginCount : '0'}"></span></td>
       <td style="text-align: center;">
         <a th:href="@{/admin/users/edit/{userId}(userId=${user.userId})}">관리</a>
       </td>
