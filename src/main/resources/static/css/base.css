@@ -85,12 +85,20 @@ a {
     background-color: rgba(31, 27, 130, 1);
 }
 
+.solid-bg-yellow {
+    background-color: #FFB800;
+}
+
 .soft-bg {
     background-color: rgba(31, 27, 130, 0.65);
 }
 
 .btn {
     min-width: 80px;
+}
+
+.btn-medium {
+    width: 100px;
 }
 
 .text-soft-danger {
