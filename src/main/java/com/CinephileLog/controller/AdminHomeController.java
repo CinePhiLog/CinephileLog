@@ -14,7 +14,7 @@ public class AdminHomeController {
     @GetMapping
     public String home(@AuthenticationPrincipal CustomOAuth2User principal, Model model) {
         if (principal != null) {
-            model.addAttribute("nickname", principal.getNickname());
+            //model.addAttribute("nickname", principal.getNickname());
             model.addAttribute("email", principal.getAttribute("email"));
             model.addAttribute("userId", principal.getAttribute("userId"));
             model.addAttribute("role", principal.getRole().toString()); // CustomOAuth2User에서 Role 정보 가져오기
