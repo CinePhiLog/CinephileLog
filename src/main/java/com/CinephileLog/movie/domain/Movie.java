@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,8 +41,8 @@ public class Movie implements Serializable {
     @Column(name = "poster_url")
     private String posterUrl;
 
-    @Column(name = "rating")
-    private int rating;
+    @Column(name = "rating", precision = 3, scale = 1)  // ex) 5.0
+    private BigDecimal rating;
 
     @Column(name = "synopsis")
     private String synopsis;

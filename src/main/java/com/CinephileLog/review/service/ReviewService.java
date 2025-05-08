@@ -10,9 +10,12 @@ import com.CinephileLog.review.dto.ReviewRequestUpdate;
 import com.CinephileLog.review.dto.ReviewResponse;
 import com.CinephileLog.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.sqm.sql.BaseSqmToSqlAstConverter.AdditionalInsertValues;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,6 +33,7 @@ public class ReviewService {
     }
 
     // 리뷰 생성(로그인 한 유저만)
+    @Transactional
     public ReviewResponse createReview(Long movieId, ReviewRequest request, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
@@ -42,6 +46,8 @@ public class ReviewService {
         }
 
         Review savedReview = reviewRepository.save(request.toEntity(user, movie));
+
+        updateMovieRating(movie);
 
         return new ReviewResponse(savedReview);
     }
@@ -144,6 +150,29 @@ public class ReviewService {
         review.setContent(request.getContent());
         review.setRating(request.getRating());
 
+        Movie movie = review.getMovie();
+        updateMovieRating(movie);
+
         return new ReviewResponse(review);
+    }
+
+    // movie 평점에 모든 리뷰들의 평점을 업로드
+    private void updateMovieRating(Movie movie) {
+        List<Review> reviews = reviewRepository.findAllByMovie_Id(movie.getId());
+
+        if(reviews.isEmpty()) {
+            movie.setRating(BigDecimal.ZERO);
+        } else {
+            BigDecimal averageRating = reviews.stream()
+                    .map(Review::getRating)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .divide(BigDecimal.valueOf(reviews.size()), 2, RoundingMode.HALF_UP);
+
+            movie.setRating(averageRating.setScale(1, RoundingMode.HALF_UP));
+        }
+
+        log.info("영화 평점 업데이트: {}", movie.getRating());
+
+        movieRepository.save(movie);
     }
 }

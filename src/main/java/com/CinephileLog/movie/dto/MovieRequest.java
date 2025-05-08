@@ -2,6 +2,7 @@ package com.CinephileLog.movie.dto;
 
 import com.CinephileLog.movie.domain.Genre;
 import com.CinephileLog.movie.domain.Movie;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class MovieRequest {
     public Movie toEntity(Set<Genre> genres) {
         return new Movie(
                 null, title, releaseDate,
-                posterUrl, 0, synopsis,
+                posterUrl, BigDecimal.valueOf(0.0), synopsis,
                 director, cast, genres
         );
     }
