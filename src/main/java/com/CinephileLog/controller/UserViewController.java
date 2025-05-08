@@ -35,7 +35,8 @@ public class UserViewController {
     }
 
     @GetMapping("/login")
-    public String logInView() {
+    public String logInView(Model model) {
+        model.addAttribute("showMenu", false);
         return "logIn";
     }
 
@@ -100,7 +101,8 @@ public class UserViewController {
 
     @GetMapping("/checkNickname")
     public String checkNickname(@AuthenticationPrincipal OAuth2User user) {
-        if (user.getAttribute("nickname") == null) {
+        User userInfo = userService.getUserById(user.getAttribute("userId"));
+        if (userInfo.getNickname() == null) {
             return "redirect:/setUpNickname";   //redirect to set up nickname page if user hasn't set up
         }
 
@@ -111,6 +113,7 @@ public class UserViewController {
     public String setUpNickname(@AuthenticationPrincipal OAuth2User user, Model model) {
         Long userId = user.getAttribute("userId");
         model.addAttribute("userId", userId);
+        model.addAttribute("showMenu", false);
         return "setUpNickname";
     }
 
@@ -118,7 +121,7 @@ public class UserViewController {
     public String myProfileView(@AuthenticationPrincipal OAuth2User user, Model model) {
         User userInfo = userService.getUserById(user.getAttribute("userId"));
         model.addAttribute("user", userInfo);
-
+        model.addAttribute("showMenu", true);
         return "myProfile";
     }
 

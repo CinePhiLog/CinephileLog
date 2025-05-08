@@ -9,25 +9,14 @@
 </head>
 <body>
 <div id="main-area">
-    <div id="nav-bar">
-        <div class="row">
-            <a href="/home" class="col-3 d-flex align-items-center">
-                <img src="/images/picture_logo.png" class="ml-2 logo"/>
-                <h4 class="font-weight-bold site-name">CinePhiLog</h4>
-            </a>
-            <div class="col-9 nav-menu">
-                <span class="menu-link mr-2" th:action="@{/profile}">내 프로필</span>
-                <form th:action="@{/userLogout}" method="get">
-                    <button type="submit" class="nav-menu-button">로그아웃</button>
-                </form>
-                <span th:text="${user.nickname}"></span>
-                <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="member-badge-icon"/>
-            </div>
-        </div>
-    </div>
+    <div th:replace="header :: siteHeader"></div>
     <div id="main-content" class="soft-bg">
         <div class="row">
-            <div id="profile-left" class="col-lg-3 pr-4 border-right">
+            <div id="profile-left" class="col-lg-3 pr-4 position-relative white-border" style="border-right: 1px solid rgba(255, 255, 255, 0.5);">
+                <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-top">
+
+                <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-bottom">
+
                 <span class="mb-3 title">내 프로필</span><br><br>
                 <div class="mb-3 image-box">
                     <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="badge-img"/>
@@ -36,7 +25,8 @@
             </div>
             <div id="profile-right" class="col-lg-9 pl-0">
                 <span class="mb-3 pl-4 title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><br><br><br>
-                <div class="pl-4 border-bottom">
+                <div class="pl-4 position-relative" style="border-bottom: 1px solid rgba(255, 255, 255, 0.5);">
+                    <img src="/images/border-end-img.png" class="border-end-img-horizontal border-end-img-right">
                     <input type="hidden" id="user-id" th:value="${user.getUserId()}">
 
                     <!-- Nickname Section -->
@@ -46,7 +36,7 @@
                             <span id="nickname-text" th:text="${user.getNickname()}"></span>
                             <input type="hidden" id="nickname-ori" th:value="${user.getNickname()}">
                             <input type="text" id="nickname-input" class="form-control" placeholder="nickname" autocomplete="off" th:value="${user.getNickname()}">
-                            <span id="nickname-msg" class="text-soft-danger" style="display:none;">Nickname has been used by other user</span>
+                            <span id="nickname-msg" class="text-soft-danger" style="display:none;">닉네임 중복입니다</span>
                         </div>
                         <div class="col-sm-4">
                             <img id="checked-icon" th:src="@{/images/checked_icon.png}" style="display:none;">
