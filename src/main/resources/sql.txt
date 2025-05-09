@@ -16,9 +16,7 @@ DROP TABLE IF EXISTS review_like;
 -- 회원 등급
 CREATE TABLE grade (
     grade_id BIGINT PRIMARY KEY,
-    grade_name VARCHAR(100) NOT NULL,
-    min_point BIGINT NOT NULL,
-    description TEXT
+    grade_name VARCHAR(100) NOT NULL
 );
 
 -- 회원
@@ -28,7 +26,7 @@ CREATE TABLE user (
     email VARCHAR(300) NOT NULL,
     nickname VARCHAR(100),
     role ENUM('ROLE_ADMIN','ROLE_USER') NOT NULL DEFAULT 'ROLE_USER',
-    grade_id BIGINT NOT NULL,
+    grade_id BIGINT NOT NULL DEFAULT 1,
     point BIGINT DEFAULT 0,
     is_active VARCHAR(1) NOT NULL DEFAULT 'Y',
     register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -111,15 +109,6 @@ CREATE TABLE review (
     FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
 );
 
--- 리뷰좋아요
-CREATE TABLE review_like (
-	like_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT NOT NULL,
-    review_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (review_id) REFERENCES review(review_id) ON DELETE CASCADE
-);
-
 -- 플레이리스트
 CREATE TABLE playlist (
     playlist_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -139,9 +128,26 @@ CREATE TABLE playlist_movie (
     FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
 );
 
+-- 리뷰좋아요
+CREATE TABLE review_like (
+    like_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    review_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (review_id) REFERENCES review(review_id) ON DELETE CASCADE
+);
+-- 등급용 점수 테이블
+CREATE TABLE user_score (
+    user_id BIGINT PRIMARY KEY,
+    review_count INT NOT NULL,
+    like_count INT NOT NULL,
+    weighted_score DOUBLE NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
 -- 기본 등급 데이터
-INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (1, 'jelly', 0, '');
-INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (2, 'coke', 10, '');
-INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (3, 'nachos', 100, '');
-INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (4, 'hotdog', 1000, '');
-INSERT INTO grade(grade_id, grade_name, min_point, description) VALUES (5, 'popcorn', 10000, '');
+INSERT INTO grade(grade_id, grade_name) VALUES (1, 'jelly');
+INSERT INTO grade(grade_id, grade_name) VALUES (2, 'coke');
+INSERT INTO grade(grade_id, grade_name) VALUES (3, 'nachos');
+INSERT INTO grade(grade_id, grade_name) VALUES (4, 'hotdog');
+INSERT INTO grade(grade_id, grade_name) VALUES (5, 'popcorn');

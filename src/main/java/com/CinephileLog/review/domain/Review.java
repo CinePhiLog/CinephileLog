@@ -62,4 +62,13 @@ public class Review {
 
     @Column(name = "like_count")
     private Long likeCount = 0L;
+
+    public Review(User user, Movie movie, double rating, String content) {
+        this.user = user;
+        this.movie = movie;
+        this.rating = BigDecimal.valueOf(rating);
+        this.content = content;
+        this.likeCount = 0L;
+    }
+
 }
