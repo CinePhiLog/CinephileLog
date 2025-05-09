@@ -1,7 +1,6 @@
 package com.CinephileLog.controller;
 
 import com.CinephileLog.domain.User;
-import com.CinephileLog.service.GradeService;
 import com.CinephileLog.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
