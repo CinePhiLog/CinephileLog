@@ -147,6 +147,22 @@ CREATE TABLE user_score (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
+
+-- 칼럼 테이블
+CREATE TABLE column_article (
+    column_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    movie_id BIGINT NOT NULL,
+    title VARCHAR(300) NOT NULL,
+    content TEXT NOT NULL,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    view_count BIGINT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(movie_id)
+);
+
 -- 기본 등급 데이터
 INSERT INTO grade(grade_id, grade_name) VALUES (1, 'jelly');
 INSERT INTO grade(grade_id, grade_name) VALUES (2, 'coke');
