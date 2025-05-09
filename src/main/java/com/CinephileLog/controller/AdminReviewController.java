@@ -21,28 +21,30 @@ public class AdminReviewController {
 
     @GetMapping
     public String listReviews(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<ReviewResponse> reviews = reviewService.getAllReviewsWithNickname(keyword);
+        List<ReviewResponse> reviews;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // 검색어가 있는 경우 관리자용 검색 메서드 호출
+            reviews = reviewService.searchReviewsAdmin(keyword);
+        } else {
+            // 검색어가 없는 경우 모든 리뷰 조회
+            reviews = reviewService.findAllReviews();
+        }
         model.addAttribute("reviews", reviews);
+        model.addAttribute("keyword", keyword);
         return "admin/review/list";
     }
 
-    @PostMapping("/delete/{reviewId}")
-    public String deleteReview(@PathVariable Long reviewId) {
-        reviewService.deleteReview(reviewId);
+    @PostMapping("/delete/{id}")
+    public String deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
         return "redirect:/admin/reviews";
     }
 
-    @GetMapping("/{reviewId}")
-    public String reviewDetail(@PathVariable Long reviewId, Model model) {
-        ReviewResponse review = reviewService.getReviewById(reviewId);
+    @GetMapping("/{id}")
+    public String reviewDetail(@PathVariable Long id, @RequestParam(value = "keyword", required = false) String keyword, Model model) {
+        ReviewResponse review = reviewService.getReviewById(id);
         model.addAttribute("review", review);
+        model.addAttribute("keyword", keyword);
         return "admin/review/detail";
-    }
-
-    @GetMapping("/search")
-    public String searchReviews(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
-        List<ReviewResponse> searchResults = reviewService.getAllReviewsWithNickname(keyword);
-        model.addAttribute("reviews", searchResults);
-        return "admin/review/list";
     }
 }

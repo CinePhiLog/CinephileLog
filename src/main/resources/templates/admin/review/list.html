@@ -168,11 +168,13 @@
     </thead>
     <tbody>
     <tr th:each="review : ${reviews}">
-      <td th:text="${review.reviewId}"></td>
-      <td th:text="${review.nickname}"></td>
+      <td th:text="${review.id}"></td>
+      <td th:text="${review.user.nickname}"></td>
       <td style="max-width: none; overflow: visible; text-overflow: inherit;"><span th:text="${review.content}"></span></td>
       <td th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-      <td><a th:href="@{/admin/reviews/{reviewId}(reviewId=${review.reviewId})}">관리</a></td>
+      <td>
+        <a th:href="@{/admin/reviews/{id}(id=${review.id}, keyword=${keyword})}">관리</a>
+      </td>
     </tr>
     </tbody>
   </table>

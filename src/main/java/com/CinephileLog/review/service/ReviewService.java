@@ -185,4 +185,20 @@ public class ReviewService {
             throw new IllegalArgumentException("평점은 0.0에서 10.0 사이여야 함");
         }
     }
+
+    // 모든 리뷰 조회 (관리자 페이지용)
+    public List<ReviewResponse> findAllReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream()
+                .map(ReviewResponse::new)
+                .toList();
+    }
+
+    // 닉네임, 리뷰 내용, 영화 제목으로 검색 (관리자 페이지용)
+    public List<ReviewResponse> searchReviewsAdmin(String keyword) {
+        List<Review> reviews = reviewRepository.searchReviews(keyword);
+        return reviews.stream()
+                .map(ReviewResponse::new)
+                .toList();
+    }
 }
