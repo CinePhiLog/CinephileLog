@@ -18,4 +18,5 @@ public class ChatMessageDTO {
     private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp sendTime;
+    private String type;
 }

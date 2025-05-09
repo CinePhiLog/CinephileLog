@@ -8,10 +8,11 @@ DROP TABLE IF EXISTS user_chatting_room;
 DROP TABLE IF EXISTS movie_genre;
 DROP TABLE IF EXISTS chatting_room;
 DROP TABLE IF EXISTS movie;
-DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS genre;
-DROP TABLE IF EXISTS grade;
 DROP TABLE IF EXISTS review_like;
+DROP TABLE IF EXISTS user_score;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS grade;
 
 -- 회원 등급
 CREATE TABLE grade (
@@ -51,6 +52,7 @@ CREATE TABLE movie (
     poster_url VARCHAR(250),
     rating DECIMAL(3,1) DEFAULT 0,
     synopsis TEXT,
+    synopsis_original TEXT,
     director TEXT,
     cast TEXT
 );

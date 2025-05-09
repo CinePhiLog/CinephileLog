@@ -23,11 +23,11 @@ public class MovieRequest {
     private String cast;
     private List<Long> genreIds;
 
-    public Movie toEntity(Set<Genre> genres) {
-        return new Movie(
-                null, title, titleOriginal, releaseDate,
-                posterUrl, BigDecimal.valueOf(0.0), synopsis,
-                director, cast, genres
-        );
-    }
+//    public Movie toEntity(Set<Genre> genres) {
+//        return new Movie(
+//                null, title, titleOriginal, releaseDate,
+//                posterUrl, BigDecimal.valueOf(0.0), synopsis,
+//                director, cast, genres
+//        );
+//    }
 }
