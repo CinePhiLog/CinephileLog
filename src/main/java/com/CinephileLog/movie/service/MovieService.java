@@ -39,4 +39,9 @@ public class MovieService {
                 .map(movie -> new MovieResponse(movie))
                 .orElseThrow(() -> new EntityNotFoundException("영화를 찾을 수 없습니다. id=" + id));
     }
+
+    public List<Movie> searchByTitle(String keyword) {
+        return movieRepository.findByTitleContainingIgnoreCase(keyword);
+    }
+
 }

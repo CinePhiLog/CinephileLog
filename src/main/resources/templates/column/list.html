@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>칼럼 목록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <script>
+        function autoSubmitForm() {
+            document.querySelector('form').submit();
+        }
+    </script>
+</head>
+<body>
+<div id="main-area">
+    <div th:replace="header :: siteHeader"></div>
+
+    <div class="container mt-5">
+        <h2>칼럼 게시판</h2>
+
+        <form class="form-inline mb-3" method="get">
+            <select name="size" class="form-control mr-2" onchange="autoSubmitForm()">
+                <option th:selected="${size == 10}" value="10">10개씩</option>
+                <option th:selected="${size == 20}" value="20">20개씩</option>
+            </select>
+            <select name="sort" class="form-control mr-2" onchange="autoSubmitForm()">
+                <option th:selected="${sort == 'createdDate'}" value="createdDate">최신순</option>
+                <option th:selected="${sort == 'viewCount'}" value="viewCount">조회순</option>
+            </select>
+            <select name="field" class="form-control mr-2">
+                <option th:selected="${field == 'title'}" value="title">제목</option>
+                <option th:selected="${field == 'nickname'}" value="nickname">작성자</option>
+            </select>
+            <input type="text" name="keyword" th:value="${keyword}" class="form-control mr-2" placeholder="검색어"/>
+            <button type="submit" class="btn btn-primary">검색</button>
+        </form>
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/column/write" class="btn btn-success">✍ 글쓰기</a>
+        </div>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th style="width: 80px">포스터</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="column, iterStat : ${columns.content}">
+                <td th:text="${iterStat.index + 1}">1</td>
+                <td><img th:src="'https://image.tmdb.org/t/p/w92' + ${column.posterUrl}" alt="포스터" class="img-thumbnail" style="max-height: 90px;"></td>
+                <td><a th:href="@{/column/view/{id}(id=${column.columnId})}" th:text="${column.title}">제목</a></td>
+                <td th:text="${column.nickname}">작성자</td>
+                <td th:text="${#dates.format(column.createdDate, 'MM-dd HH:mm')}"></td>
+                <td th:text="${column.viewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${columns.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/column?page=1&size=${size}|}">&laquo; 처음</a>
+                </li>
+                <li class="page-item" th:classappend="${pageBlockStart <= 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/column?page=${pageBlockStart - 1}&size=${size}|}">이전</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(pageBlockStart, pageBlockEnd)}"
+                    th:if="${i} <= ${columns.totalPages}"
+                    th:classappend="${columns.number + 1 == i} ? 'active'">
+                    <a class="page-link" th:href="@{|/column?page=${i}&size=${size}|}" th:text="${i}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${pageBlockEnd >= columns.totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/column?page=${pageBlockEnd + 1}&size=${size}|}">다음</a>
+                </li>
+                <li class="page-item" th:classappend="${columns.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/column?page=${columns.totalPages}&size=${size}|}">&raquo; 마지막</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
