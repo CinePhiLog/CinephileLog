@@ -79,6 +79,7 @@ public class AdminUserController {
             searchResults = adminUserManagementService.getAllUsers();
         }
         model.addAttribute("users", searchResults);
+        model.addAttribute("keyword", keyword);
         return "admin/user/list";
     }
 }

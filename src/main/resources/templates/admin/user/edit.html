@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>유저 관리</title>
-  <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <link rel="stylesheet" th:href="@{/css/admin_edit.css}">
 </head>
 <body>
 <div class="container">
@@ -63,9 +63,8 @@
   </form>
 </div>
 
-<div class="button-container" style="margin-top: 20px;">
-  <a th:href="@{/admin/users}">유저 목록</a>
-</div>
+<div class="button-container" style="margin-top: 20px; justify-content: center;">
+  <a th:href="@{/admin/users}" class="user-list-button">유저 목록</a>
 </div>
 </body>
 </html>
