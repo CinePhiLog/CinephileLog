@@ -18,9 +18,9 @@ public class TmdbController {
         return "ok";
     }
 
-    @GetMapping("/sync-movies")
-    public String syncMovies() {
-        tmdbService.saveMovies();
-        return "ok";
-    }
+//    @GetMapping("/sync-movies")
+//    public String syncMovies() {
+//        tmdbService.saveMovies();
+//        return "ok";
+//    }
 }

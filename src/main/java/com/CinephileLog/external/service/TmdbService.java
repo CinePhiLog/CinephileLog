@@ -39,40 +39,40 @@ public class TmdbService {
         }
     }
 
-    @Transactional
-    public void saveMovies() {
-        List<TmdbMovie> movies = tmdbClient.fetchMovies();
-
-        List<Genre> genres = genreRepository.findAll();
-
-        for(TmdbMovie dto : movies) {
-            List<String> genreNames = dto.getGenreNames(genres);
-            Set<Genre> genreSet = genres.stream()
-                    .filter(g -> genreNames.contains(g.getName()))
-                    .collect(Collectors.toSet());
-            if(dto.getTitle() == null) continue;
-
-            // 영화의 credits 정보를 가져오기
-            Credits credits = tmdbClient.fetchCredits(dto.getId());
-            dto.setCredits(credits);  // credits를 TmdbMovie에 설정
-
-            String director = dto.getDirector();
-            String cast = dto.getCast();
-
-            Movie movie = new Movie(
-                    null,
-                    dto.getTitle(),
-                    dto.getTitleOriginal(),
-                    LocalDate.parse(dto.getReleaseDate()),
-                    "https://image.tmdb.org/t/p/w500" + dto.getPosterUrl(),
-                    BigDecimal.valueOf(0.0),
-                    dto.getSynopsis(),
-                    director,
-                    cast,
-                    genreSet
-            );
-
-            movieRepository.save(movie);
-        }
-    }
+//    @Transactional
+//    public void saveMovies() {
+//        List<TmdbMovie> movies = tmdbClient.fetchMovies();
+//
+//        List<Genre> genres = genreRepository.findAll();
+//
+//        for(TmdbMovie dto : movies) {
+//            List<String> genreNames = dto.getGenreNames(genres);
+//            Set<Genre> genreSet = genres.stream()
+//                    .filter(g -> genreNames.contains(g.getName()))
+//                    .collect(Collectors.toSet());
+//            if(dto.getTitle() == null) continue;
+//
+//            // 영화의 credits 정보를 가져오기
+//            Credits credits = tmdbClient.fetchCredits(dto.getId());
+//            dto.setCredits(credits);  // credits를 TmdbMovie에 설정
+//
+//            String director = dto.getDirector();
+//            String cast = dto.getCast();
+//
+//            Movie movie = new Movie(
+//                    null,
+//                    dto.getTitle(),
+//                    dto.getTitleOriginal(),
+//                    LocalDate.parse(dto.getReleaseDate()),
+//                    "https://image.tmdb.org/t/p/w500" + dto.getPosterUrl(),
+//                    BigDecimal.valueOf(0.0),
+//                    dto.getSynopsis(),
+//                    director,
+//                    cast,
+//                    genreSet
+//            );
+//
+//            movieRepository.save(movie);
+//        }
+//    }
 }

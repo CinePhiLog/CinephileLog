@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>채팅방</title>
-    <link rel="stylesheet" href="/css/navigation-bar.css">
+    <link rel="stylesheet" href="/css/base.css">
     <style>
         body {
             background-color: #6D6BAE;
@@ -20,46 +20,40 @@
             gap: 20px;
         }
 
-        #movie-card {
-            width: 250px;
-            height: 100%;
-            perspective: 1000px;
-        }
-
-        .card-inner {
-            width: 100%;
-            height: 100%;
+        .movie-card {
             position: relative;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-
-        #movie-card:hover .card-inner {
-            transform: rotateY(180deg);
-            cursor: pointer;
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
+            width: 300px;
             height: 100%;
-            backface-visibility: hidden;
-            border-radius: 12px;
             overflow: hidden;
+            border-radius: 12px;
         }
 
-        .card-front img {
+        .poster-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .card-back {
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            transform: rotateY(180deg);
-            color: #fff;
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+        }
+
+        .movie-card:hover .overlay {
+            opacity: 1;
         }
 
         #chat-box {
@@ -131,9 +125,14 @@
 
         .system-message {
             text-align: center;
-            font-size: 12px;
-            color: #999;
-            margin: 10px 0;
+            font-size: 13px;
+            color: #555;
+            margin: 12px 0;
+            font-weight: bold;
+            background-color: #e2dff5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            align-self: center;
         }
 
         .date-separator {
@@ -160,112 +159,50 @@
         }
 
         #send-button {
-            margin-left: 8px;
-            padding: 8px 14px;
-            background: #7b6dc8;
-            color: white;
+            margin-left: 10px;
+            background: #6d5dd3;
             border: none;
             border-radius: 50%;
-            font-size: 20px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
 
         #send-button:hover {
-            background: #695ab3;
-        }
-        #main-area {
-            height: 100vh;
-            width: 100vw;
-            overflow: auto;
-        }
-        #nav-bar {
-            height: 65px;
-            background-color: #FFB800;
-            align-content: center;
-            padding-left: 30px;
-            padding-right: 30px;
-            caret-color: transparent;
-            border-radius: 50px 50px 0 0;
-        }
-
-        .nav-menu > * {
-            font-weight: bold;
-            font-size: 14px;
-            float: right;
-            padding: 10px;
-            text-align: center;
-            color: black;
-        }
-
-        .nav-menu > img {
-            padding: 0px;
-        }
-
-        .menu-link:hover {
-            text-shadow: 1px 1px 2px grey;
-            cursor: pointer;
-        }
-
-        .nav-menu-button {
-            font-weight: bold;
-            background:none;
-            border:none;
-        }
-
-        .nav-menu-button:hover {
-            text-shadow: 1px 1px 2px grey;
-            cursor: pointer;
-        }
-
-        .member-badge-icon {
-            width: 50px;
-            height: auto;
+            background: #5848b9;
         }
     </style>
 </head>
 <body>
-    <div id="main-area">
-        <div id="nav-bar">
-            <div class="row">
-                <a href="/home" class="col-3 d-flex align-items-center">
-                    <img src="/images/picture_logo.png" class="ml-2 logo"/>
-                    <h4 class="font-weight-bold site-name">CinePhiLog</h4>
-                </a>
-                <div class="col-9 nav-menu">
-                    <span class="menu-link mr-2" th:action="@{/profile}">내 프로필</span>
-                    <form th:action="@{/userLogout}" method="post">
-                        <button type="submit" class="nav-menu-button">로그아웃</button>
-                    </form>
-                    <span th:text="${nickname}"></span>
-        <!--            <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="member-badge-icon"/>-->
-                </div>
-            </div>
+<div th:replace="header :: siteHeader"></div>
+<div id="chat-container">
+    <div class="movie-card" onclick="location.href='/movie/[[${movieId}]]'">
+        <img th:src="'https://image.tmdb.org/t/p/w500' + ${posterUrl}" class="poster-img" alt="poster">
+        <div class="overlay">
+            <h3>[[${movieTitle}]]</h3>
+            <p>⭐ [[${rating}]]</p>
+            <p>감독: [[${director}]]</p>
+            <p>배우: [[${cast}]]</p>
         </div>
     </div>
-    <div id="chat-container">
-        <div id="movie-card" onclick="location.href='/movie/[[${movieId}]]'">
-            <div class="card-inner">
-                <div class="card-front">
-                    <img th:src="@{${posterUrl}}" alt="poster">
-                </div>
-                <div class="card-back">
-                    <h3>[[${movieTitle}]]</h3>
-                    <p>⭐ [[${rating}]]</p>
-                    <p>감독: [[${director}]]</p>
-                    <p>배우: [[${cast}]]</p>
-                </div>
-            </div>
-        </div>
 
-        <div id="chat-box">
-            <div class="chat-header">[[${movieTitle}]] 채팅방</div>
-            <div id="chat-messages"></div>
-            <div id="chat-input-container">
-                <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
-                <button id="send-button" onclick="sendMessage()">▶️</button>
-            </div>
+    <div id="chat-box">
+        <div class="chat-header">[[${movieTitle}]] 채팅방</div>
+        <div id="chat-messages"></div>
+        <div id="chat-input-container">
+            <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
+            <button id="send-button" onclick="sendMessage()" aria-label="Send">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#fff" viewBox="0 0 24 24">
+                    <path d="M2.01 21l20.99-9L2.01 3v7l15 2-15 2z"/>
+                </svg>
+            </button>
         </div>
     </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
@@ -291,7 +228,6 @@
                 displayMessage(msg);
             });
 
-
             stompClient.send(`/app/chat/enter/${roomId}`, {}, JSON.stringify({
                 userId: userId,
                 nickname: nickname,
@@ -313,6 +249,13 @@
         }));
         document.getElementById("chat-input").value = "";
     }
+
+    document.getElementById("chat-input").addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
 
     function displayMessage(msg) {
         const msgDate = new Date(msg.sendTime);
@@ -349,17 +292,6 @@
             chatBox.appendChild(wrapper);
         }
 
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-
-
-
-    function displaySystemMessage(text) {
-        const systemMsg = document.createElement("div");
-        systemMsg.classList.add("system-message");
-        systemMsg.innerText = text;
-        chatBox.appendChild(systemMsg);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 

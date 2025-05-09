@@ -29,15 +29,18 @@ public class MessageService {
 
     public List<ChatMessageDTO> getMessages(Long roomId, int page, int size) {
         int offset = page * size;
-        return messageRepository.findMessages(roomId, offset, size).stream().map(m -> {
+        List<Object[]> results = messageRepository.findMessagesWithNickname(roomId, offset, size);
+
+        return results.stream().map(row -> {
             ChatMessageDTO dto = new ChatMessageDTO();
-            dto.setUserId(m.getUserId());
-            dto.setNickname("User" + m.getUserId());
-            dto.setContent(m.getContent());
-            dto.setSendTime(m.getSendTime());
+            dto.setUserId(((Number) row[2]).longValue());
+            dto.setContent((String) row[3]);
+            dto.setSendTime((Timestamp) row[4]);
+            dto.setNickname((String) row[5]);
             return dto;
         }).collect(Collectors.toList());
     }
+
 
 }
 
