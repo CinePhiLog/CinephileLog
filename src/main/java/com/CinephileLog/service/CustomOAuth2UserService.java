@@ -42,15 +42,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             email = (String) kakaoAccount.get("email");
             nickname = (String) properties.get("nickname");
             newAttributes.put("email", email);
-            newAttributes.put("nickname", nickname);
         } else { // 다른 Provider 처리
             email = (String) originalAttributes.get("email");
             nickname = (String) originalAttributes.get("name");
             newAttributes.put("email", email);
-            newAttributes.put("nickname", nickname);
         }
 
-        if (email == null || nickname == null) {
+        if (email == null) {
             throw new OAuth2AuthenticationException("Get user information from " + provider + " failed");
         }
 
@@ -69,7 +67,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
             newAttributes.put("userId", user.getUserId());
             newAttributes.put("email", user.getEmail());
-            newAttributes.put("nickname", user.getNickname());
             newAttributes.put("role", user.getRole());
         } else {
             activeUser.setLastLogin(LocalDateTime.now());
@@ -78,7 +75,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
             newAttributes.put("userId", activeUser.getUserId());
             newAttributes.put("email", activeUser.getEmail());
-            newAttributes.put("nickname", activeUser.getNickname());
             newAttributes.put("role", activeUser.getRole());
             userRole = activeUser.getRole();
         }
