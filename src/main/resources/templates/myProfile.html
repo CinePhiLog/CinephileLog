@@ -12,7 +12,7 @@
     <div th:replace="header :: siteHeader"></div>
     <div id="main-content" class="soft-bg">
         <div class="row">
-            <div id="profile-left" class="col-lg-3 pr-4 position-relative white-border" style="border-right: 1px solid rgba(255, 255, 255, 0.5);">
+            <div id="profile-left" class="col-lg-3 pr-5 position-relative white-border" style="border-right: 1px solid rgba(255, 255, 255, 0.5);">
                 <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-top">
 
                 <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-bottom">
@@ -20,12 +20,15 @@
                 <span class="mb-3 title">내 프로필</span><br><br>
                 <div class="mb-3 image-box">
                     <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="badge-img"/>
+                    <div class="d-flex align-items-center justify-content-end">
+                        <img src="/images/login_image.png" class="content-img"/>
+                    </div>
                 </div>
-                <button id="edit-user-btn" class="btn btn-primary">수정</button>
+                <button id="edit-user-btn" class="mt-3 btn btn-primary">수정</button>
             </div>
             <div id="profile-right" class="col-lg-9 pl-0">
-                <span class="mb-3 pl-4 title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><br><br><br>
-                <div class="pl-4 position-relative" style="border-bottom: 1px solid rgba(255, 255, 255, 0.5);">
+                <span class="mb-3 pl-5 title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><br><br><br>
+                <div class="pl-5 pb-5 position-relative" style="border-bottom: 1px solid rgba(255, 255, 255, 0.5);">
                     <img src="/images/border-end-img.png" class="border-end-img-horizontal border-end-img-right">
                     <input type="hidden" id="user-id" th:value="${user.getUserId()}">
 
@@ -67,13 +70,21 @@
                             <span th:text="${user.getPoint()}"></span>
                         </div>
                     </div>
+
+                    <!-- Last Login Section -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-sm-2 col-form-label">최종 접속 시간 :</label>
+                        <div class="col-sm-10">
+                            <span th:text="${#temporals.format(user.getLastLogin(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Buttons -->
-                <div class="mt-4 pl-4 align-items-center">
-                    <button type="button" id="terminate-user-btn" class="btn btn-danger">탈퇴</button>
-                    <button type="button" id="save-user-btn" class="btn btn-primary mr-3">저장</button>
-                    <button type="button" id="cancel-user-btn" class="btn btn-secondary">취소</button>
+                <div class="mt-5 pl-5 text-center">
+                    <button type="button" id="terminate-user-btn" class="btn btn-medium btn-danger">탈퇴</button>
+                    <button type="button" id="save-user-btn" class="btn btn-medium btn-primary mr-3">저장</button>
+                    <button type="button" id="cancel-user-btn" class="btn btn-medium btn-secondary">취소</button>
                 </div>
             </div>
         </div>

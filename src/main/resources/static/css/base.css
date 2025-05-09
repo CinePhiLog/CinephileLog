@@ -93,6 +93,10 @@ a {
     min-width: 80px;
 }
 
+.btn-medium {
+    width: 100px;
+}
+
 .text-soft-danger {
     color: #801d1d !important;
     font-weight: normal;
