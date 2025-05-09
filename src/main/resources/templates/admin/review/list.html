@@ -2,147 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>리뷰 관리</title>
-  <link rel="stylesheet" th:href="@{/css/admin.css}">
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-    }
-
-    .container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: none;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    .button-container {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .button-container a {
-      display: inline-block;
-      padding: 8px 12px;
-      margin-right: 10px;
-      text-decoration: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-    }
-
-    .button-container a:hover {
-      background-color: #0056b3;
-    }
-
-    .search-bar {
-      margin-bottom: 15px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-bar input[type="text"] {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-right: 10px;
-      flex-grow: 1;
-    }
-
-    .search-bar button {
-      padding: 8px 12px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .search-bar button:hover {
-      background-color: #1e7e34;
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 50%;
-    }
-
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 5%;
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 15%;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 15%;
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-      width: 15%;
-    }
-
-    th:nth-child(6),
-    td:nth-child(6) {
-      width: 10%;
-      text-align: center;
-    }
-
-    .return-button-container {
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    .return-button-container a {
-      display: inline-block;
-      padding: 8px 12px;
-      text-decoration: none;
-      background-color: #6c757d;
-      color: white;
-      border-radius: 5px;
-    }
-
-    .return-button-container a:hover {
-      background-color: #5a6268;
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/admin_list.css}">
 </head>
 <body>
 <div class="container">
@@ -156,7 +16,7 @@
   <div class="return-button-container">
     <a th:href="@{/admin/reviews}">리뷰 목록으로 돌아가기</a>
   </div>
-  <table>
+  <table class="review-table">
     <thead>
     <tr>
       <th>ID</th>

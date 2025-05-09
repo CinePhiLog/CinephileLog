@@ -1,0 +1,126 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgba(31, 27, 130, 0.65);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 90%;
+    max-width: 960px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    margin-top: 0;
+    text-align: center;
+}
+
+.back-button {
+    background-color: #f8f9fa;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    align-self: flex-start;
+}
+
+.back-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.detail-box {
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.detail-box p {
+    margin-bottom: 15px;
+    line-height: 1.7;
+    font-size: 1.1em;
+}
+
+.detail-box strong {
+    font-weight: bold;
+    color: #555;
+    display: inline-block;
+    width: 120px;
+}
+
+.detail-box .button-container-review {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.detail-box .button-container-review form button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    background-color: #dc3545;
+    color: white;
+    min-width: 120px;
+    text-align: center;
+}
+
+.detail-box .button-container-review form button:hover {
+    background-color: #c82333;
+}
+
+.detail-box .button-container-review a {
+    display: inline-block;
+    padding: 12px 20px;
+    text-decoration: none;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.detail-box .button-container-review a:hover {
+    background-color: #5a6268;
+}
+
+.review-list-container {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.review-list-container a:hover {
+    background-color: #5a6268;
+}
