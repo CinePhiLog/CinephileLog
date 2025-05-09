@@ -70,6 +70,14 @@
                             <span th:text="${user.getPoint()}"></span>
                         </div>
                     </div>
+
+                    <!-- Last Login Section -->
+                    <div class="row mb-3 align-items-center">
+                        <label class="col-sm-2 col-form-label">최종 접속 시간 :</label>
+                        <div class="col-sm-10">
+                            <span th:text="${#temporals.format(user.getLastLogin(), 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Buttons -->
