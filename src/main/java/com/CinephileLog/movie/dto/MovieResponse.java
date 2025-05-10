@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +18,12 @@ import lombok.NoArgsConstructor;
 public class MovieResponse {
     private Long id;
     private String title;
+    private String titleOriginal;
     private LocalDate releaseDate;
     private String posterUrl;
     private BigDecimal rating;
     private String synopsis;
+    private String synopsisOriginal;
     private String director;
     private String cast;
     private List<GenreResponse> genres;
@@ -28,10 +31,12 @@ public class MovieResponse {
     public MovieResponse(Movie movie) {
         this.id = movie.getId();
         this.title = movie.getTitle();
+        this.titleOriginal = movie.getTitleOriginal();
         this.releaseDate = movie.getReleaseDate();
         this.posterUrl = movie.getPosterUrl();
         this.rating = movie.getRating();
         this.synopsis = movie.getSynopsis();
+        this.synopsisOriginal = movie.getSynopsisOriginal();
         this.director = movie.getDirector();
         this.cast = movie.getCast();
         this.genres = movie.getGenres().stream()

@@ -41,6 +41,11 @@ public class GradeService {     // 사용자 등급 조회
         return gradeRepository.findById(gradeId);
     }
 
+    public Grade getGradeByUserId(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        return user.getGrade();
+    }
+
     @Transactional
     public void updateGradeForUser(Long userId) {
         int reviewCount = reviewRepository.countByUserUserId(userId);

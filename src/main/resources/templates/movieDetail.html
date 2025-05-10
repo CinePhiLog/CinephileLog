@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 상세</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/movieDetail.css">
+</head>
+<body>
+
+<div id="main-area">
+    <div th:replace="header :: siteHeader"></div>
+
+    <div id="main" class="soft-bg">
+        <div class="row">
+            <div id="movieDetail-left" class="col-lg-5 pr-5 position-relative">
+
+                <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-top">
+                <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-bottom">
+
+                <div class="mb-3 image-box d-flex justify-content-center align-items-center">
+                    <img th:src="${movie.posterUrl}" alt="영화 포스터" class="poster-img"/>
+                </div>
+
+                <!-- 가로 구분선 -->
+                <div class="white-line"></div>
+
+                <!-- 영화 제목 -->
+                <div class="row mb-3 align-items-center">
+                    <span class="title-intro">제목</span>
+                    <div class="title">
+                        <span th:text="${movie.title != null and !movie.title.isEmpty() ? movie.title : movie.titleOriginal}"></span>                    </div>
+                </div>
+
+                <!-- 가로 구분선 -->
+                <div class="white-line"></div>
+
+                <!-- 세부 정보 -->
+                <div class="row mb-3 align-items-center">
+                    <span class="details-title">세부 정보</span>
+                    <div class="details-content">
+                        <div>감독: <span th:text="${movie.director}"></span></div>
+                        <div>출연: <span th:text="${movie.cast}"></span></div>
+                        <div>장르:
+                            <span th:if="${#lists.isEmpty(movie.genres)}">장르 정보 없음</span>
+                            <span th:unless="${#lists.isEmpty(movie.genres)}">
+                                <span th:each="genre, iterStat : ${movie.genres}">
+                                    <span th:text="${genre.genreName}"></span>
+                                    <span th:if="${not iterStat.last}">,</span>
+                                </span>
+                            </span>
+                        </div>
+                        <div>개봉일: <span th:text="${movie.releaseDate}"></span></div>
+                    </div>
+                </div>
+
+                <!-- 가로 구분선 -->
+                <div class="white-line"></div>
+
+                <!-- 줄거리 -->
+                <div class="row mb-3 align-items-center">
+                    <span class="details-title">줄거리</span>
+                    <div class="synopsis-content">
+                        <span th:text="${movie.synopsis != null and !movie.synopsis.isEmpty() ? movie.synopsis : movie.synopsisOriginal}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="movieDetail-right" class="col-lg-7 pl-0">
+                <div class="reviews">
+                    <!-- 리뷰 제목 -->
+                    <div class="reviews-header mb-3">
+                        <span class="reviews-intro">영화 리뷰</span>
+
+                        <select id="sort-select" class="form-select" style="width: auto;">
+                            <option value="newest">최신순</option>
+                            <option value="oldest">오래된 순</option>
+                            <option value="most-likes">좋아요 많은 순</option>
+                            <option value="least-likes">좋아요 적은 순</option>
+                        </select>
+                    </div>
+
+                    <!-- 리뷰 목록 -->
+                    <div class="reviews-list">
+                        <div th:each="review : ${reviews}"
+                             class="review-card mb-3"
+                             th:attr="data-created=${review.createdDate}, data-updated=${review.updatedDate}">
+                            <div class="review-card-body">
+                                <div class="review-top d-flex justify-content-between align-items-center">
+                                    <!-- 별점 -->
+                                    <div class="rating">
+                                        <div class="star-container">
+                                            <!-- 꽉 찬 별들 -->
+                                            <span th:each="i : ${#numbers.sequence(1, review.fullStars)}" class="star full">★</span>
+
+                                            <!-- 반 별 (있다면) -->
+                                            <span th:if="${review.halfStar}" class="star half">★</span>
+
+                                            <!-- 비어있는 별들 -->
+                                            <span th:each="i : ${#numbers.sequence(1, review.emptyStars)}"
+                                                  th:if="${review.emptyStars > 0}"
+                                                  class="star empty">★</span>                                        </div>
+                                    </div>
+
+                                    <!-- 닉네임 등급 -->
+                                    <div class="nickname-grade">
+                                        <h5 class="nickname" th:text="${review.user.nickname}"></h5>
+                                        <span class="grade-badge" th:text="${review.user.gradeName}"></span>
+                                    </div>
+                                </div>
+
+                                <!-- 리뷰 내용 -->
+                                <div class="review-content">
+                                    <div class="review-content-box">
+                                        <span th:text="${review.getContent()}"></span>
+                                    </div>
+                                </div>
+
+                                <!-- 버튼 -->
+                                <div class="review-buttons d-flex justify-content-between align-items-center mt-2">
+                                    <div class="buttons">
+                                        <!-- 좋아요 버튼 -->
+                                        <button class="like-button btn btn-sm"
+                                                th:data-review-id="${review.id}"
+                                                th:classappend="${likedReviewIds.contains(review.id)} ? 'btn-primary liked' : 'btn-outline-primary'"
+                                                th:attr="data-liked=${likedReviewIds.contains(review.id)}">
+                                            좋아요 (<span class="like-count" th:text="${review.likeCount}">0</span>)
+                                        </button>
+
+                                        <!-- 삭제 버튼 -->
+                                        <button
+                                                type="button"
+                                                class="delete-button btn btn-sm btn-outline-danger"
+                                                th:if="${review.user.userId == user.getUserId()}">
+                                            삭제
+                                        </button>
+                                    </div>
+
+                                    <!-- 생성/수정 날짜 -->
+                                    <p class="review-date">작성 날짜:
+                                        <span th:text="${review.updatedDate != null && review.updatedDate != review.createdDate ? review.updatedDate : review.createdDate}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 페이지네이션 버튼들 -->
+                    <div class="pagination-container d-flex justify-content-center mt-4">
+                        <button class="pagination-btn" id="prev-btn">&lt; 이전</button>
+                        <div class="pagination-numbers" id="pagination-numbers"></div>
+                        <button class="pagination-btn" id="next-btn">다음 &gt;</button>
+                    </div>
+                </div>
+
+                <!-- 가로 구분선 -->
+                <div class="white-line-right"></div>
+
+                <!-- 리뷰 생성/수정 -->
+                <div class="review-create-update mb-3">
+                    <div class="reviews-header mb-3">
+                        <span class="reviews-intro">리뷰 작성</span>
+                    </div>
+
+                    <!-- 별점 입력 -->
+                    <div class="rating-section mb-3">
+                        <div class="rating-input-star">
+                            <label class="rating-label">별점</label>
+                            <div class="rating-stars" id="rating-stars"></div>
+                            <span id="rating-value" class="rating-score">0.0</span>
+                        </div>
+                    </div>
+
+                    <!-- 리뷰 내용 입력 -->
+                    <div class="content-input mb-3">
+                        <label class="content-label">리뷰 작성</label>
+                        <textarea class="review-input-content" placeholder="리뷰와 별점을 입력하세요"></textarea>
+                    </div>
+
+                    <!-- 리뷰 생성/수정 삭제 버튼 -->
+                    <div class="review-submit-container">
+                        <button class="review-delete-btn btn btn-danger"
+                                th:if="${hasUserReviewed}"
+                                th:data-review-id="${reviews[0].id}"
+                                th:data-movie-id="${movieId}">
+                            삭제
+                        </button>
+
+                        <button class="review-submit-btn"
+                                th:text="${hasUserReviewed ? '리뷰 수정' : '리뷰 생성'}"
+                                th:data-movie-id="${movieId}"
+                                th:data-user-id="${user.userId}"
+                                th:data-review-id="${hasUserReviewed ? reviews[0].id : ''}">
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/movie-detail.js"></script>
+</body>
+</html>
