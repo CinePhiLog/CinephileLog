@@ -337,4 +337,48 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// 채팅방 입력 버튼 드래그 기능
+const chatButton = document.getElementById("chatButton");
+
+let isDragging = false;
+let offsetX, offsetY;
+let mouseDownTime = 0;
+
+chatButton.addEventListener("mousedown", function (e) {
+    isDragging = true;
+    offsetX = e.clientX - chatButton.getBoundingClientRect().left;
+    offsetY = e.clientY - chatButton.getBoundingClientRect().top;
+    mouseDownTime = Date.now();
+    e.preventDefault();
+});
+
+document.addEventListener("mousemove", function (e) {
+    if (isDragging) {
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        chatButton.style.left = `${x}px`;
+        chatButton.style.top = `${y}px`;
+        chatButton.style.right = "auto";
+        chatButton.style.bottom = "auto";
+    }
+});
+
+document.addEventListener("mouseup", function (e) {
+    if (!isDragging) return;
+    isDragging = false;
+
+    const mouseUpTime = Date.now();
+    const pressDuration = mouseUpTime - mouseDownTime;
+
+    // 드래그가 거의 없었고, 누른 시간이 짧으면 이동
+    const moveThreshold = 5; // px
+    const timeThreshold = 200; // ms
+
+    const movedX = Math.abs(e.clientX - (chatButton.offsetLeft + offsetX));
+    const movedY = Math.abs(e.clientY - (chatButton.offsetTop + offsetY));
+
+    if (pressDuration < timeThreshold && movedX < moveThreshold && movedY < moveThreshold) {
+        window.location.href = chatButton.dataset.href;
+    }
+});
 

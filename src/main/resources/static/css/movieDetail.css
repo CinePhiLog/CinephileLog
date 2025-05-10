@@ -453,14 +453,15 @@ body {
 
 .review-submit-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 10px;
+    margin-left: 20px;
 }
 
 .review-submit-btn {
     padding: 5px 14px;
     background-color: white;
-    color: black;
+    color: #007bff;
     border: none;
     border-radius: 4px;
     font-size: 0.9rem;
@@ -470,6 +471,7 @@ body {
 
 .review-submit-btn:hover {
     background-color: #007bff;
+    color: white;
 }
 
 .review-delete-btn {
@@ -487,3 +489,27 @@ body {
     background-color: #dc3545;
     color: white;
 }
+
+/* 채티방 입장 버튼 */
+.chat-button {
+    position: fixed;
+    bottom: 45px;
+    right: 50px;
+    background-color: #FFB800;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+    cursor: grab;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-button:active {
+    cursor: grabbing;
+}
+
