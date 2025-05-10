@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Optional;
+
 @Configuration
 @RequiredArgsConstructor
 public class MovieBatchConfig {
@@ -77,17 +79,29 @@ public class MovieBatchConfig {
         int endId = ctx.getInt("endId");
         String apiKey = ctx.getString("apiKey");
 
-        ItemReader<Integer> reader = new MovieIdReader(startId, endId);
-        ItemProcessor<Integer, Movie> processor = id -> tmdbApiClient.fetchMovieById(id, apiKey).orElse(null);
+        System.out.println("🔁 파티션 실행: startId=" + startId + ", endId=" + endId + ", apiKey=" + apiKey);
 
+        ItemReader<Integer> reader = new MovieIdReader(startId, endId);
+
+        ItemProcessor<Integer, Movie> processor = id -> {
+            Optional<Movie> movie = tmdbApiClient.fetchMovieById(id, apiKey);
+            if (movie.isPresent()) {
+                System.out.println("✅ 저장 대상 영화 ID: " + id);
+            }
+            return movie.orElse(null);
+        };
 
         return new StepBuilder("movieStep-" + startId + "-" + endId, jobRepository)
                 .<Integer, Movie>chunk(10, transactionManager)
                 .reader(reader)
                 .processor(processor)
-                .writer(movies -> movieRepository.saveAll(movies))
+                .writer(movies -> {
+                    movieRepository.saveAll(movies);
+                    System.out.println("💾 저장 완료 - count: " + movies.size());
+                })
                 .faultTolerant()
                 .skipPolicy(new AlwaysSkipItemSkipPolicy())
                 .build();
     }
+
 }

@@ -71,6 +71,7 @@ public class GradeService {     // 사용자 등급 조회
             double score = u.getReviewCount() * 0.3 + u.getLikeCount() * 0.7;
             u.setWeightedScore(score);
             userScoreMapper.upsertUserScore(u);
+            userRepository.updateUserPoint(u.getUserId(), (long) score);
         }
 
         users.sort(Comparator.comparingDouble(UserScoreDTO::getWeightedScore).reversed());

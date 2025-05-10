@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${column.columnId != null} ? '칼럼 수정' : '칼럼 작성'">칼럼 작성</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/base.css">
+</head>
+<body>
+<div id="main-area">
+  <div th:replace="header :: siteHeader"></div>
+
+  <div class="container mt-5">
+    <h2 th:text="${column.columnId != null} ? '칼럼 수정' : '칼럼 작성'"></h2>
+
+    <form method="post" th:action="@{/column/save}" th:object="${column}">
+      <input type="hidden" th:field="*{columnId}"/>
+
+      <div class="form-group">
+        <label for="searchKeyword">영화 검색</label>
+        <div class="input-group mb-2">
+          <input type="text" id="searchKeyword" class="form-control" placeholder="영화 제목을 입력하세요">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary" onclick="searchMovie()">검색</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" id="searchResult" style="display:none">
+        <label>검색 결과</label>
+        <ul class="list-group" id="resultList"></ul>
+      </div>
+
+      <input type="hidden" th:field="*{movieId}" id="movieId">
+
+      <div class="form-group">
+        <label for="movieTitle">선택된 영화</label>
+        <input type="text" class="form-control" id="movieTitle" th:value="${column.movieTitle}" readonly required>
+      </div>
+
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" th:field="*{title}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea class="form-control" id="content" th:field="*{content}" rows="10" required></textarea>
+      </div>
+
+      <div class="form-group d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">저장</button>
+        <a th:href="@{/column}" class="btn btn-secondary">취소</a>
+      </div>
+    </form>
+
+    <form th:if="${column.columnId != null}" method="post" th:action="@{'/column/delete/' + ${column.columnId}}" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+      <button type="submit" class="btn btn-danger">삭제</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function searchMovie() {
+    const keyword = document.getElementById("searchKeyword").value;
+    if (!keyword) return;
+
+    fetch(`/api/movies/search?keyword=${keyword}`)
+            .then(response => response.json())
+            .then(data => {
+              const list = document.getElementById("resultList");
+              list.innerHTML = "";
+              if (data.length === 0) {
+                list.innerHTML = "<li class='list-group-item'>검색 결과 없음</li>";
+                return;
+              }
+              data.forEach(movie => {
+                const item = document.createElement("li");
+                item.className = "list-group-item list-group-item-action";
+                item.textContent = `${movie.title} (${movie.releaseDate || 'N/A'})`;
+                item.onclick = () => selectMovie(movie);
+                list.appendChild(item);
+              });
+              document.getElementById("searchResult").style.display = "block";
+            });
+  }
+
+  function selectMovie(movie) {
+    document.getElementById("movieId").value = movie.movieId;
+    document.getElementById("movieTitle").value = movie.title;
+    document.getElementById("searchResult").style.display = "none";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgba(31, 27, 130, 0.65);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 90%;
+    max-width: 800px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 15px;
+    font-size: 1em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="number"],
+.form-group select {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    min-width: 400px;
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.button-container form {
+    display: inline-block;
+}
+
+.button-container button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* 저장 버튼*/
+.button-container > form:first-child > button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-container > form:first-child > button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* 삭제 버튼 */
+.button-container > form:nth-child(2) > button[type="submit"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+.button-container > form:nth-child(2) > button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+/* 유저 목록 버튼 */
+.user-list-button {
+    background-color: #6c757d;
+    color: white;
+    display: inline-block;
+    padding: 12px 20px;
+    text-align: center;
+    border-radius: 4px;
+    text-decoration: none;
+    min-width: 120px;
+    margin-top: 20px;
+}
+
+.user-list-button:hover {
+    background-color: #5a6268;
+}
+
+.form-group input[readonly] {
+    background-color: #eee;
+    color: #777;
+    cursor: not-allowed;
+}
+
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg fill="%23343a40" viewBox="0 0 4 5"><path d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 5px;
+    padding-right: 20px;
+}

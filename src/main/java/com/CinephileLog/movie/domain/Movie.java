@@ -29,7 +29,6 @@ public class Movie implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
     private Long id;
 
@@ -51,6 +50,10 @@ public class Movie implements Serializable {
 
     @Column(name = "synopsis")
     private String synopsis;
+
+    @Column(name = "synopsis_original")
+    private String synopsisOriginal;
+
 
     @Column(name = "director")
     private String director;
