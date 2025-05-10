@@ -21,12 +21,11 @@ public class GradeViewController {
     @GetMapping("/gradeInfo")
     public String gradeDescView(@AuthenticationPrincipal OAuth2User user, Model model) {
         //For header
-        User userInfo = userService.getUserById(user.getAttribute("userId"));
-        model.addAttribute("user", userInfo);
+        if (user != null) {
+            User userInfo = userService.getUserById(user.getAttribute("userId"));
+            model.addAttribute("user", userInfo);
+        }
         model.addAttribute("showMenu", true);
-
-        //For content
-        //List<Grade> grades = gradeService.getAllGrades();
 
         List<Map<String, String>> gradeList = new ArrayList<>();
         gradeList.add(createGrade("popcorn", "This is popcorn description"));

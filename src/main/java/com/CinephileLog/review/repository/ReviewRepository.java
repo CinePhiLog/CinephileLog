@@ -21,4 +21,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "OR (:keyword IS NULL OR LOWER(r.content) LIKE LOWER(concat('%', :keyword, '%'))) " +
             "OR (:keyword IS NULL OR LOWER(r.movie.title) LIKE LOWER(concat('%', :keyword, '%')))")
     List<Review> searchReviews(@Param("keyword") String keyword);
+
+    //Get top 3 movie id based on review count
+    @Query(value = "SELECT r.movie_id FROM review r " +
+            "GROUP BY r.movie_id " +
+            "ORDER BY MAX(r.like_count) DESC " +
+            "LIMIT 3", nativeQuery = true)
+    List<Long> findTop3MovieIdsByReview();
+
 }

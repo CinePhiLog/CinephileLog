@@ -27,7 +27,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**","/css/**","/login","/user").permitAll()
+                        .requestMatchers("/images/**","/css/**","/login","/user", "/gradeInfo", "/home", "/").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // /admin/** 경로는 ROLE_ADMIN 권한 필요
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/checkNickname", true)
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/home")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                 )

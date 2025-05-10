@@ -208,4 +208,8 @@ public class ReviewService {
                 .map(ReviewResponse::new)
                 .toList();
     }
+
+    public List<Long> findTop3MovieIdsByReview() {
+        return reviewRepository.findTop3MovieIdsByReview();
+    }
 }
