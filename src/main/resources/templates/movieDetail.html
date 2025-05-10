@@ -180,18 +180,18 @@
 
                     <!-- 리뷰 생성/수정 삭제 버튼 -->
                     <div class="review-submit-container">
-                        <button class="review-delete-btn btn btn-danger"
-                                th:if="${hasUserReviewed}"
-                                th:data-review-id="${reviews[0].id}"
-                                th:data-movie-id="${movieId}">
-                            삭제
-                        </button>
-
                         <button class="review-submit-btn"
                                 th:text="${hasUserReviewed ? '리뷰 수정' : '리뷰 생성'}"
                                 th:data-movie-id="${movieId}"
                                 th:data-user-id="${user.userId}"
                                 th:data-review-id="${hasUserReviewed ? reviews[0].id : ''}">
+                        </button>
+
+                        <button class="review-delete-btn btn btn-danger"
+                                th:if="${hasUserReviewed}"
+                                th:data-review-id="${reviews[0].id}"
+                                th:data-movie-id="${movieId}">
+                            삭제
                         </button>
                     </div>
                 </div>
@@ -200,6 +200,10 @@
         </div>
     </div>
 </div>
+<div class="chat-button" id="chatButton" th:data-href="@{/chatroom/{id}(id=${movieId})}">
+    <img src="/images/chat.png" alt="채팅" style="width: 35px; height: 35px;" />
+</div>
+
 <script src="/js/movie-detail.js"></script>
 </body>
 </html>
