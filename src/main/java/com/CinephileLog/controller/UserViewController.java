@@ -48,7 +48,7 @@ public class UserViewController {
 
     @GetMapping("/postLogout")
     public String postLogout() {
-        return "login";
+        return "home";
     }
 
     @GetMapping("/userLogout")
@@ -123,10 +123,5 @@ public class UserViewController {
         model.addAttribute("user", userInfo);
         model.addAttribute("showMenu", true);
         return "myProfile";
-    }
-
-    @GetMapping("/home")
-    public String homeView() {
-        return "index";
     }
 }

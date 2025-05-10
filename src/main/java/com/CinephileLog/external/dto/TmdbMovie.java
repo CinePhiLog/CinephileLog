@@ -32,6 +32,11 @@ public class TmdbMovie {
     @JsonProperty("genre_ids")
     private List<Long> genreIds;
 
+    @JsonProperty("vote_average")
+    private double voteAverage;
+
+    private int rating;
+
     private Credits credits; // director, cast 를 가져오기 위해. TMDB에서는 credits로 따로 관리
 
     public List<String> getGenreNames(List<Genre> genres) {
@@ -59,5 +64,10 @@ public class TmdbMovie {
                     .collect(Collectors.joining(", "));
         }
         return "배우 없음";
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+        this.rating = (int) Math.round(voteAverage);
     }
 }

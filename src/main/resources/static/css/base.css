@@ -14,9 +14,8 @@ a {
     color: white;
 }
 
-.logo {
-    height: 50px;
-    width: auto;
+.black-text {
+    color: black;
 }
 
 .site-name {
@@ -27,46 +26,7 @@ a {
 #main-area {
     height: 100vh;
     width: 100vw;
-    overflow: auto;
-}
-
-#nav-bar {
-    height: 65px;
-    background-color: #FFB800;
-    align-content: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    caret-color: transparent;
-    border-radius: 50px 50px 0 0;
-}
-
-.nav-menu > * {
-    font-weight: bold;
-    font-size: 14px;
-    float: right;
-    padding: 10px;
-    text-align: center;
-    color: black;
-}
-
-.nav-menu > img {
-    padding: 0px;
-}
-
-.menu-link:hover {
-    text-shadow: 1px 1px 2px grey;
-    cursor: pointer;
-}
-
-.nav-menu-button {
-    font-weight: bold;
-    background:none;
-    border:none;
-}
-
-.nav-menu-button:hover {
-    text-shadow: 1px 1px 2px grey;
-    cursor: pointer;
+    overflow-x: hidden;
 }
 
 .member-badge-icon {
@@ -131,3 +91,56 @@ a {
 .border-end-img-right {
     right: -40px;
 }
+
+/* for header start*/
+#nav-bar {
+    height: 65px;
+    background-color: #FFB800;
+    align-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    caret-color: transparent;
+    border-radius: 50px 50px 0 0;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.nav-menu * {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.nav-menu > img {
+    padding: 0px;
+}
+
+.menu-link:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.nav-menu-button {
+    font-weight: bold;
+    background:none;
+    border:none;
+}
+
+.nav-menu-button:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+/* for header end */
