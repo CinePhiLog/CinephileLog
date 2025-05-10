@@ -15,8 +15,11 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.sqm.sql.BaseSqmToSqlAstConverter.AdditionalInsertValues;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 @Slf4j
 @Service
@@ -136,6 +139,10 @@ public class ReviewService {
         if(review == null) {
             throw new NoSuchElementException("해당하는 리뷰 없음");
         }
+
+        review.setRating(BigDecimal.ZERO);
+        Movie movie = review.getMovie();
+        updateMovieRating(movie);
 
         reviewRepository.delete(review);
     }

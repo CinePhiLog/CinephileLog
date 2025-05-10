@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.grade.gradeId = :gradeId WHERE u.userId = :userId")
     void updateGrade(Long userId, Long gradeId);
+    User findByUserId(Long userId);
 }

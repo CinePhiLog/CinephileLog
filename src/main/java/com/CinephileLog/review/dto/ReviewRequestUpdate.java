@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ReviewRequestUpdate {
     @DecimalMin(value = "0.0", inclusive = true, message = "평점은 0.0 이상이어야 합니다.")
     @DecimalMax(value = "5.0", inclusive = true, message = "평점은 5.0 이하여야 합니다.")
-    @Digits(integer = 1, fraction = 1, message = "소수점 한 자리까지만 입력 가능합니다.")
+    @Digits(integer = 2, fraction = 1, message = "소수점 한 자리까지만 입력 가능합니다.")
     private BigDecimal rating;
 
     private String content;

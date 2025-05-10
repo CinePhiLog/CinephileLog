@@ -7,6 +7,7 @@ import com.CinephileLog.review.domain.ReviewLike;
 import com.CinephileLog.review.repository.ReviewLikeRepository;
 import com.CinephileLog.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,9 @@ public class ReviewLikeService {
             reviewRepository.save(review);
             return true;
         }
+    }
+
+    public List<ReviewLike> findReviewLikedByUser(Long userId) {
+        return reviewLikeRepository.findByUserUserId(userId);
     }
 }
