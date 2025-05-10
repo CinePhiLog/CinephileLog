@@ -1,3 +1,46 @@
+// 리뷰 정렬
+document.getElementById('sort-select').addEventListener('change', function() {
+    const sortBy = this.value;
+    sortReviews(sortBy);
+});
+
+function sortReviews(sortBy) {
+    const reviewsList = document.querySelector('.reviews-list');
+    const reviews = Array.from(reviewsList.getElementsByClassName('review-card'));
+
+    reviews.sort((a, b) => {
+        const getReviewData = (reviewElement) => {
+            const createdDate = new Date(reviewElement.getAttribute('data-created'));
+            const updatedDate = new Date(reviewElement.getAttribute('data-updated') || createdDate); // `updatedDate`가 없으면 `createdDate`를 사용
+            const likeCount = parseInt(reviewElement.querySelector('.like-count').textContent);
+            const latestDate = updatedDate > createdDate ? updatedDate : createdDate; // 최신 날짜를 선택
+            return { latestDate, likeCount };
+        };
+
+        const dataA = getReviewData(a);
+        const dataB = getReviewData(b);
+
+        switch (sortBy) {
+            case 'newest':
+                return dataB.latestDate - dataA.latestDate;  // 최신순
+            case 'oldest':
+                return dataA.latestDate - dataB.latestDate;  // 오래된 순
+            case 'most-likes':
+                return dataB.likeCount - dataA.likeCount;  // 좋아요 많은 순
+            case 'least-likes':
+                return dataA.likeCount - dataB.likeCount;  // 좋아요 적은 순
+            default:
+                return 0;
+        }
+    });
+
+    // 정렬된 리뷰를 DOM에 다시 반영
+    reviews.forEach(review => reviewsList.appendChild(review));
+}
+
+
+
+
 // 리뷰 삭제
 document.addEventListener('DOMContentLoaded', function () {
     const deleteButtons = document.querySelectorAll('.delete-button');

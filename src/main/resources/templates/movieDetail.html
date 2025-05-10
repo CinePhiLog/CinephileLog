@@ -30,8 +30,7 @@
                 <div class="row mb-3 align-items-center">
                     <span class="title-intro">제목</span>
                     <div class="title">
-                        <span th:text="${movie.getTitle()}"></span>
-                    </div>
+                        <span th:text="${movie.title != null and !movie.title.isEmpty() ? movie.title : movie.titleOriginal}"></span>                    </div>
                 </div>
 
                 <!-- 가로 구분선 -->
@@ -63,7 +62,7 @@
                 <div class="row mb-3 align-items-center">
                     <span class="details-title">줄거리</span>
                     <div class="synopsis-content">
-                        <span th:text="${movie.getSynopsis()}"></span>
+                        <span th:text="${movie.synopsis != null and !movie.synopsis.isEmpty() ? movie.synopsis : movie.synopsisOriginal}"></span>
                     </div>
                 </div>
             </div>
@@ -73,11 +72,20 @@
                     <!-- 리뷰 제목 -->
                     <div class="reviews-header mb-3">
                         <span class="reviews-intro">영화 리뷰</span>
+
+                        <select id="sort-select" class="form-select" style="width: auto;">
+                            <option value="newest">최신순</option>
+                            <option value="oldest">오래된 순</option>
+                            <option value="most-likes">좋아요 많은 순</option>
+                            <option value="least-likes">좋아요 적은 순</option>
+                        </select>
                     </div>
 
                     <!-- 리뷰 목록 -->
                     <div class="reviews-list">
-                        <div th:each="review : ${reviews}" class="review-card mb-3">
+                        <div th:each="review : ${reviews}"
+                             class="review-card mb-3"
+                             th:attr="data-created=${review.createdDate}, data-updated=${review.updatedDate}">
                             <div class="review-card-body">
                                 <div class="review-top d-flex justify-content-between align-items-center">
                                     <!-- 별점 -->
@@ -110,22 +118,29 @@
                                 </div>
 
                                 <!-- 버튼 -->
-                                <div class="review-buttons d-flex justify-content-between mt-2">
-                                    <!-- 좋아요 버튼 -->
-                                    <button class="like-button btn btn-sm"
-                                            th:data-review-id="${review.id}"
-                                            th:classappend="${likedReviewIds.contains(review.id)} ? 'btn-primary liked' : 'btn-outline-primary'"
-                                            th:attr="data-liked=${likedReviewIds.contains(review.id)}">
-                                        좋아요 (<span class="like-count" th:text="${review.likeCount}">0</span>)
-                                    </button>
+                                <div class="review-buttons d-flex justify-content-between align-items-center mt-2">
+                                    <div class="buttons">
+                                        <!-- 좋아요 버튼 -->
+                                        <button class="like-button btn btn-sm"
+                                                th:data-review-id="${review.id}"
+                                                th:classappend="${likedReviewIds.contains(review.id)} ? 'btn-primary liked' : 'btn-outline-primary'"
+                                                th:attr="data-liked=${likedReviewIds.contains(review.id)}">
+                                            좋아요 (<span class="like-count" th:text="${review.likeCount}">0</span>)
+                                        </button>
 
-                                    <!-- 삭제 버튼 -->
-                                    <button
-                                            type="button"
-                                            class="delete-button btn btn-sm btn-outline-danger"
-                                            th:if="${review.user.userId == user.getUserId()}">
-                                        삭제
-                                    </button>
+                                        <!-- 삭제 버튼 -->
+                                        <button
+                                                type="button"
+                                                class="delete-button btn btn-sm btn-outline-danger"
+                                                th:if="${review.user.userId == user.getUserId()}">
+                                            삭제
+                                        </button>
+                                    </div>
+
+                                    <!-- 생성/수정 날짜 -->
+                                    <p class="review-date">작성 날짜:
+                                        <span th:text="${review.updatedDate != null && review.updatedDate != review.createdDate ? review.updatedDate : review.createdDate}"></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +152,6 @@
                         <div class="pagination-numbers" id="pagination-numbers"></div>
                         <button class="pagination-btn" id="next-btn">다음 &gt;</button>
                     </div>
-
                 </div>
 
                 <!-- 가로 구분선 -->

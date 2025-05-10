@@ -101,7 +101,7 @@ CREATE TABLE review (
     review_id BIGINT NOT NULL AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     movie_id BIGINT NOT NULL,
-    rating decimal(2,1) NOT NULL,
+    rating decimal(3,1) NOT NULL,
     content TEXT,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

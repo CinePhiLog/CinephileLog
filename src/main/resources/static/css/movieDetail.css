@@ -143,7 +143,27 @@ body {
     font-weight: bold;
     margin-bottom: 0.7rem;
     margin-left: 10px;
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#sort-select {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+#sort-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
 .reviews-intro {
@@ -249,10 +269,19 @@ body {
 
 .review-buttons {
     display: flex;
-    justify-content: flex-end; /* 버튼들을 양쪽 끝에 정렬 */
+    justify-content: space-between; /* 버튼들을 양쪽 끝에 정렬 */
     align-items: center;
     width: 100%; /* 부모 컨테이너에 width를 100% 설정 */
-    margin-top: 3px;
+    margin-top: 5px;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.review-date {
+    margin: 0;
 }
 
 /* 좋아요 버튼 (왼쪽 정렬, 기본 흰색 → 파란색으로 토글) */

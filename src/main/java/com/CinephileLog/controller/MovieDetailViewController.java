@@ -9,6 +9,7 @@ import com.CinephileLog.review.service.ReviewLikeService;
 import com.CinephileLog.review.service.ReviewService;
 import com.CinephileLog.service.GradeService;
 import com.CinephileLog.service.UserService;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,6 +68,7 @@ public class MovieDetailViewController {
                 .filter(review -> review.getUser().getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
+
         model.addAttribute("userReview", userReview);
 
         return "movieDetail";
