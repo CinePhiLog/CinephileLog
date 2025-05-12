@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
 <div th:fragment="siteHeader">
-    <div id="nav-bar">
-        <div class="row align-items-center">
+    <div id="nav-bar" class="container-fluid py-2">
+        <div class="row align-items-center no-gutters">
             <a href="/home" class="col-3 d-flex align-items-center">
                 <img src="/images/picture_logo.png" class="ml-2 logo"/>
                 <h4 class="font-weight-bold site-name">CinePhiLog</h4>
             </a>
-            <div th:if="${showMenu}" class="col-9 nav-menu">
+            <div class="col-5 d-flex justify-content-center">
+                <form th:action="@{/search}" method="get" class="d-flex w-100" style="max-width: 500px; position: relative;" id="searchForm">
+                    <input type="text" name="keyword" id="searchInput"
+                           class="form-control mr-2" placeholder="영화 제목을 입력하세요" autocomplete="off" required/>
+                    <button type="submit" class="btn btn-outline-primary">검색</button>
+                    <ul id="autocompleteList" class="list-group w-100" style="position: absolute; top: 100%; z-index: 1000;"></ul>
+                </form>
+            </div>
+            <div th:if="${showMenu}" class="col-4 nav-menu">
                 <div th:if="${userId != null}" class="d-flex align-items-center">
                     <div>
-                        <img class="pr-0 member-badge-icon" th:src="@{/images/badge_{imageName}.png(imageName=${gradeName})}"/>
-                        <span class="pl-0"th:text="${nickname}"></span>
+                        <img class="pr-0 member-badge-icon"
+                             th:src="@{/images/badge_{imageName}.png(imageName=${gradeName})}"/>
+                        <span class="pl-0" th:text="${nickname}"></span>
                     </div>
                     <a class="menu-link mr-2" th:href="@{/profile}">내 프로필</a>
                     <a class="menu-link mr-2" th:if="${roleName == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
@@ -25,6 +31,6 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/autocomplete.js"></script>
 </div>
-</body>
-</html>
