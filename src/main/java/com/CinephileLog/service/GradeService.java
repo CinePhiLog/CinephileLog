@@ -8,6 +8,7 @@ import com.CinephileLog.repository.GradeRepository;
 import com.CinephileLog.repository.UserRepository;
 import com.CinephileLog.review.repository.ReviewLikeRepository;
 import com.CinephileLog.review.repository.ReviewRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class GradeService {     // 사용자 등급 조회
 
@@ -74,27 +76,21 @@ public class GradeService {     // 사용자 등급 조회
     @Transactional
     public void weeklyGradeReevaluation() {
         List<UserScoreDTO> users = userScoreMapper.selectEligibleUsers();
-
         for (UserScoreDTO u : users) {
             double score = u.getReviewCount() * 0.3 + u.getLikeCount() * 0.7;
             u.setWeightedScore(score);
             userScoreMapper.upsertUserScore(u);
             userRepository.updateUserPoint(u.getUserId(), (long) score);
         }
-
         users.sort(Comparator.comparingDouble(UserScoreDTO::getWeightedScore).reversed());
-
-        int top10 = (int) Math.ceil(users.size() * 0.10);
-        int top5 = (int) Math.ceil(users.size() * 0.05);
-
+        int top10 = Math.max(1, (int) Math.ceil(users.size() * 0.10));
+        int top5 = Math.max(1, (int) Math.ceil(users.size() * 0.05));
         Set<Long> hotdogIds = new HashSet<>();
         Set<Long> popcornIds = new HashSet<>();
-
         for (int i = 0; i < users.size(); i++) {
-            if (i < top5) popcornIds.add(users.get(i).getUserId());
             if (i < top10) hotdogIds.add(users.get(i).getUserId());
+            if (i < top5) popcornIds.add(users.get(i).getUserId());
         }
-
         for (UserScoreDTO dto : users) {
             Long id = dto.getUserId();
             if (popcornIds.contains(id)) {
