@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>리뷰 상세 정보</title>
+  <link rel="stylesheet" th:href="@{/css/admin_detail.css}">
+</head>
+<body class="review-detail-page">
+<div class="container">
+  <button class="back-button" onclick="goBack()">&lt;</button>
+  <h1>리뷰 상세 정보</h1>
+  <div class="detail-box review-item">  <p><strong>닉네임:</strong> <span th:text="${review.user.nickname}"></span></p>
+    <p><strong>영화 제목:</strong> <span th:text="${review.movie.title}"></span></p>
+    <p><strong>별점:</strong> <span th:text="${review.rating}"></span></p>
+    <p><strong>내용:</strong> <span th:text="${review.content}"></span></p>
+    <p><strong>작성일:</strong> <span th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <p><strong>수정일:</strong> <span th:if="${review.updatedDate}" th:text="${#temporals.format(review.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></span><span th:unless="${review.updatedDate}">-</span></p>
+    <p><strong>좋아요 수:</strong> <span th:text="${review.likeCount}"></span></p>
+    <div class="button-container-review">
+      <button th:unless="${review.blinded}"type="button" class="blind-review-btn" th:attr="data-review-id=${review.id}">숨김</button>
+      <button th:if="${review.blinded}" type="button" class="unblind-review-btn" th:attr="data-review-id=${review.id}">숨김 해제</button>
+      <a th:href="@{/admin/reviews}">리뷰 목록</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<script src="/js/review_detail.js"></script>
+</body>
+</html>

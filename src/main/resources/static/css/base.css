@@ -1,0 +1,147 @@
+.row {
+    display: flex;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.title {
+    font-size: 20px;
+}
+
+.white-text {
+    color: white;
+}
+
+.black-text {
+    color: black;
+}
+
+.site-name {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    color: black;
+}
+
+#main-area {
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+#main-content {
+    height: calc(100vh - 65px);
+    caret-color: transparent;
+    padding: 50px;
+    border-radius: 0 0 50px 50px;
+}
+
+.solid-bg {
+    background-color: rgba(31, 27, 130, 1);
+}
+
+.solid-bg-yellow {
+    background-color: #FFB800;
+}
+
+.soft-bg {
+    background-color: rgba(31, 27, 130, 0.65);
+}
+
+.btn {
+    min-width: 80px;
+}
+
+.btn-medium {
+    width: 100px;
+}
+
+.text-soft-danger {
+    color: #801d1d !important;
+    font-weight: normal;
+}
+
+.border-end-img-vertical {
+    position: absolute;
+    transform: translateX(50%);
+    height: 60px;
+    right: 1px;
+}
+
+.border-end-img-top {
+    top: -40px;
+}
+
+.border-end-img-bottom {
+    bottom: -40px;
+}
+
+.border-end-img-horizontal {
+    position: absolute;
+    transform: translateY(50%);
+    height: 60px;
+    bottom: -1px;
+}
+
+.border-end-img-right {
+    right: -40px;
+}
+
+/* for header start*/
+#nav-bar {
+    height: 65px;
+    background-color: #FFB800;
+    align-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    caret-color: transparent;
+    border-radius: 50px 50px 0 0;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.nav-menu * {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.nav-menu > img {
+    padding: 0px;
+}
+
+.menu-link:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.nav-menu-button {
+    font-weight: bold;
+    background:none;
+    border:none;
+}
+
+.nav-menu-button:hover {
+    text-shadow: 1px 1px 2px grey;
+    cursor: pointer;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+}
+
+.member-badge-icon {
+    height: 50px;
+    width: auto;
+    max-height: 50px;
+}
+/* for header end */

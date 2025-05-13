@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang ="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>유저 목록</title>
+  <link rel="stylesheet" th:href="@{/css/admin_list.css}">
+</head>
+<body>
+<div class="container">
+  <h1>유저 목록</h1>
+
+  <div class="search-bar">
+    <form th:action="@{/admin/users/search}" method="get">
+      <input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="닉네임 검색">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+  <div class="return-button-container">
+    <a th:href="@{/admin/users}">유저 목록으로 돌아가기</a>
+  </div>
+  <br>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>닉네임</th>
+      <th>등급</th>
+      <th>권한</th>
+      <th>포인트</th>
+      <th>가입 여부</th>
+      <th>가입일</th>
+      <th>수정일</th>
+      <th>최종 접속 시간</th>
+      <th>접속 횟수</th>
+      <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td><span th:text="${user.userId}"></span></td>
+      <td><span th:text="${user.nickname}"></span></td>
+      <td><span th:text="${user.grade.gradeName}"></span></td>
+      <td><span th:text="${user.role}"></span></td>
+      <td style="text-align: center;"><span th:text="${user.point}"></span></td>
+      <td style="text-align: center;"><span th:text="${user.isActive}"></span></td>
+      <td><span th:text="${#temporals.format(user.registerDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
+      <td><span th:text="${#temporals.format(user.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></span></td>
+      <td><span th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'yyyy-MM-dd HH:mm:ss') : '-'}"></span></td>
+      <td style="text-align: center;"><span th:text="${user.loginCount != null ? user.loginCount : '0'}"></span></td>
+      <td style="text-align: center;">
+        <a th:href="@{/admin/users/edit/{userId}(userId=${user.userId})}">관리</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="button-container">
+    <a th:href="@{/admin}">관리자 홈</a>
+  </div>
+</div>
+</body>
+</html>
+

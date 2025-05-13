@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>리뷰 관리</title>
+  <link rel="stylesheet" th:href="@{/css/admin_list.css}">
+</head>
+<body>
+<div class="container">
+  <h1>리뷰 관리</h1>
+  <div class="search-bar">
+    <form th:action="@{/admin/reviews}" method="get">
+      <input type="text" name="keyword" th:value="${keyword}" placeholder="닉네임,리뷰내용,영화제목 검색">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+  <div class="return-button-container">
+    <a th:href="@{/admin/reviews}">리뷰 목록으로 돌아가기</a>
+  </div>
+  <table class="review-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>닉네임</th>
+      <th>내용</th>
+      <th>작성일</th>
+      <th>상태</th>
+      <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="review : ${reviews}">
+      <td th:text="${review.id}"></td>
+      <td th:text="${review.user.nickname}"></td>
+      <td style="max-width: none; overflow: visible; text-overflow: inherit;">
+        <span th:text="${review.content}"></span>
+      </td>
+      <td th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+      <!-- 리뷰 상태 표시 -->
+      <td>
+        <span th:text="${review.blinded ? '숨김' : '숨김 해제'}"></span>
+      </td>
+      <td>
+        <a th:href="@{/admin/reviews/{id}(id=${review.id}, keyword=${keyword})}">관리</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="button-container">
+    <a th:href="@{/admin}">관리자 홈</a>
+  </div>
+</div>
+</body>
+</html>

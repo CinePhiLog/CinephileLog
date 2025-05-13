@@ -1,0 +1,246 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#main-area1, #main-area2 {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    border-radius: 50px 50px 50px 50px;
+}
+
+/* CSS sroll snap to scroll a viewport at once */
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: auto;
+}
+.scroll-section {
+    height: 100vh;
+    scroll-snap-align: start;
+}
+
+#index-main-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+#index-left-content, #index-right-content {
+    height: 100vh;
+    caret-color: transparent;
+    padding: 50px;
+}
+
+.centered-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.site-name-text {
+    font-size: 12vw;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.circle1 {
+    width: 80px;
+    height: 80px;
+    background: #ADFF2F;
+    top: 150px;
+    left: 20px;
+}
+
+.circle2 {
+    width: 100px;
+    height: 100px;
+    background: #FFD700;
+    top: 10px;
+    left: 40%;
+}
+
+.circle3 {
+    width: 200px;
+    height: 200px;
+    background: #8B0000;
+    top: 15px;
+    right: 35px;
+}
+
+.circle4 {
+    width: 50px;
+    height: 50px;
+    background: #FF69B4;
+    bottom: 140px;
+    left: 20%;
+}
+
+.circle5 {
+    width: 60px;
+    height: 60px;
+    background: #00FFFF;
+    bottom: 20px;
+    left: 35%;
+}
+
+.circle6 {
+    width: 70px;
+    height: 70px;
+    background: #EEE8AA;
+    bottom: 250px;
+    right: 30%;
+}
+
+/* hand pointer start*/
+.point-down-container {
+    position: relative;
+    display: inline-block;
+    height: 80px;
+    cursor: pointer;
+}
+
+.point-down-container img {
+    width: 100%;
+    display: block;
+}
+
+.point-down {
+    height: 80px;
+    width: auto;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+.bouncing-img {
+    animation: bounce 1s infinite;
+}
+
+.point-down-text {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 7px);
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+/* hand pointer end*/
+
+/* link image start*/
+.link-img-container {
+    display: flex;
+    gap: 45px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.link-img-wrapper {
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+}
+
+.link-img {
+    height: 100px;
+    width: auto;
+    display: block;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.link-img:hover {
+    transform: scale(1.15);
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.5);
+}
+
+.link-img-text {
+    margin-top: 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* link image end*/
+
+.content-img {
+    position: absolute;
+    left: calc(50vw - 100px);
+    top: calc(50vh - 100px);
+    width: 200px;
+    transform: rotate(45deg);
+}
+
+.movie-poster-img {
+    width: 20vw;
+    height: 20vw;
+    max-height: 25vh;
+}
+
+.movie-info-box {
+    height: 20vh;
+    overflow: hidden;
+}
+
+.movie-link {
+    display: flex;
+}
+
+.movieTitle, .reviewText {
+    font-size: 14px;
+    display: block;
+    max-width: 20vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movieTitle {
+    font-weight: bold;
+}
+
+.reviewCount {
+    font-size: 10px;
+}

@@ -1,0 +1,36 @@
+<div th:fragment="siteHeader">
+    <div id="nav-bar" class="container-fluid py-2">
+        <div class="row align-items-center no-gutters">
+            <a href="/home" class="col-3 d-flex align-items-center">
+                <img src="/images/picture_logo.png" class="ml-2 logo"/>
+                <h4 class="font-weight-bold site-name">CinePhiLog</h4>
+            </a>
+            <div th:if="${showMenu}" class="col-4 d-flex justify-content-center">
+                <form th:action="@{/search}" method="get" class="d-flex w-100" style="max-width: 500px; position: relative;" id="searchForm">
+                    <input type="text" name="keyword" id="searchInput"
+                           class="form-control mr-2" placeholder="영화 제목을 입력하세요" autocomplete="off" required/>
+                    <button type="submit" class="btn btn-outline-primary">검색</button>
+                    <ul id="autocompleteList" class="list-group w-100" style="position: absolute; top: 100%; z-index: 1000;"></ul>
+                </form>
+            </div>
+            <div th:if="${showMenu}" class="col-5 nav-menu">
+                <div th:if="${userId != null}" class="d-flex align-items-center">
+                    <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
+                        <img class="pr-0 member-badge-icon"
+                             th:src="@{/images/badge_{imageName}.png(imageName=${gradeName})}"/>
+                        <span class="pl-0 text-truncate d-block" style="max-width: 100px;" th:text="${nickname}" th:title="${nickname}"></span>
+                    </div>
+                    <a class="menu-link mr-2" th:href="@{/profile}">내 프로필</a>
+                    <a class="menu-link mr-2" th:if="${roleName == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
+                    <a class="nav-menu-button" th:href="@{/userLogout}">로그아웃</a>
+                </div>
+                <div th:if="${userId == null}">
+                    <a class="nav-menu-button" th:href="@{/login}">로그인</a>
+                </div>
+                <a class="menu-link" th:href="@{/gradeInfo}">등급 소개</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/autocomplete.js"></script>
+</div>

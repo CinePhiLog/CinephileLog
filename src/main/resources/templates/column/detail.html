@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${column.title}">칼럼 상세</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/base.css">
+</head>
+<body>
+<div id="main-area">
+  <div th:replace="header :: siteHeader"></div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-3">
+        <a th:href="@{/movieDetail/{id}(id=${column.movieId})}"><img th:src="'https://image.tmdb.org/t/p/w500' + ${column.posterUrl}" class="img-fluid rounded shadow" alt="영화 포스터"></a>
+      </div>
+      <div class="col-md-9">
+        <h2 th:text="${column.title}">칼럼 제목</h2>
+        <div class="text-muted mb-3">
+          영화: <span th:text="${column.movieTitle}"></span><br>
+          작성자: <span th:text="${column.nickname}"></span><br>
+          작성일: <span th:text="${#dates.format(column.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+          <span th:if="${column.updatedDate != null and column.updatedDate != column.createdDate}">
+                        (수정됨: <span th:text="${#dates.format(column.updatedDate, 'yyyy-MM-dd HH:mm')}"></span>)
+                    </span><br>
+          조회수: <span th:text="${column.viewCount}"></span>
+        </div>
+        <hr>
+        <div th:text="${column.content}" style="white-space: pre-line; margin-bottom: 168px"></div>
+        <hr>
+        <a href="/column" class="btn btn-secondary">목록으로</a>
+        <a th:href="@{/column/edit/{id}(id=${column.columnId})}" class="btn btn-primary">수정</a>
+        <form method="post" th:action="@{'/column/delete/' + ${column.columnId}}" style="display:inline-block"
+              onsubmit="return confirm('정말 삭제하시겠습니까?')">
+          <button type="submit" class="btn btn-danger">삭제</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,10 +1,143 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>테스트</title>
+    <meta charset="UTF-8">
+    <title>CinePhiLog Home Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-<h1>MyBatis 결과: <span th:text="${result}"></span></h1>
-<h1>JPA 결과: <span th:text="${jpaResult}"></span></h1>
+<div class="scroll-container">
+<section id="main-area1" class="scroll-section">
+    <div id="index-main-content" class="solid-bg">
+        <div class="circle circle1"></div>
+        <div class="circle circle2"></div>
+        <div class="circle circle3"></div>
+        <div class="circle circle4"></div>
+        <div class="circle circle5"></div>
+        <div class="circle circle6"></div>
+        <div class="centered-row">
+            <div class="mb-5 link-img-container">
+                <div class="link-item">
+                    <a th:if="${userId == null}" th:href="@{/login}" class="link-img-wrapper">
+                        <img th:src="@{/images/ticket_image.png}" class="link-img"/>
+                        <span class="link-img-text">로그인</span>
+                    </a>
+                    <a th:if="${userId != null}" th:href="@{/logout}">
+                        <img th:src="@{/images/ticket_image.png}" class="link-img"/>
+                        <span class="link-img-text">로그아웃</span>
+                    </a>
+                </div>
+                <div class="link-item">
+                    <a th:href="@{/column}" class="link-img-wrapper">
+                        <div class="link-img-wrapper" style="cursor:pointer;">
+                            <img th:src="@{/images/clapperboard_image.png}" class="link-img"/>
+                            <span class="link-img-text">영화 칼럼</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="link-item">
+                    <a th:href="@{/gradeInfo}" class="link-img-wrapper">
+                        <img th:src="@{/images/popcorn_bucket_image.png}" class="link-img"/>
+                        <span class="link-img-text">등급 소개</span>
+                    </a>
+                </div>
+                <div th:if="${userId != null}" class="link-item">
+                    <a th:href="@{/profile}" class="link-img-wrapper">
+                        <img th:src="@{/images/beverage_image.png}" class="link-img"/>
+                        <span class="link-img-text">내 프로필</span>
+                    </a>
+                </div>
+                <div th:if="${userId != null and roleName == 'ROLE_ADMIN'}" class="link-item">
+                    <a th:href="@{/admin}" class="link-img-wrapper">
+                        <img th:src="@{/images/throphy_image.png}" class="link-img"/>
+                        <span class="link-img-text">관리자</span>
+                    </a>
+                </div>
+            </div>
+            <div class="mb-5 white-text site-name-text">CinePhiloG.</div>
+            <div class="point-down-container" onclick="document.getElementById('main-area2').scrollIntoView({ behavior: 'smooth' });">
+                <img th:src="@{/images/point_down_image.png}" class="point-down bouncing-img"/>
+                <div class="point-down-text">더보기</div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="main-area2" class="scroll-section">
+    <div class ="container-fluid">
+        <div class="row">
+            <!--top popular section-->
+            <div id="index-left-content" class="col-6 solid-bg">
+                <h3 class="mb-3 white-text font-weight-bold">영화 순위</h3>
+                <div th:each="moviePopular : ${moviesOfTopPopularity}">
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-link white-text">
+                                <img th:src="'https://image.tmdb.org/t/p/w500' + ${moviePopular.posterUrl}" class="movie-poster-img"/>
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-info-box movie-link white-text d-block">
+                                <div th:text="${moviePopular.title}" class="movieTitle"></div>
+                                <div th:text="'조회수 ' + ${reviewCountOfTopPopularity[moviePopular.id]} + ' 회'" class="reviewCount"></div>
+                                <span th:each="i : ${#numbers.sequence(1, 10)}"
+                                        th:text="${i <= moviePopular.rating} ? '★' : '☆'"
+                                        th:style="${i <= moviePopular.rating}
+                                                    ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
+                                                    : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
+                                </span>
+                                <div th:if="${reviewsOfTopPopularity[moviePopular.id]} != null">
+                                    <div th:each="review : ${reviewsOfTopPopularity[moviePopular.id]}">
+                                        <span th:text="${review.content}" class="reviewText"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--top reviews section-->
+            <div id="index-right-content" class="col-6 solid-bg-yellow">
+                <h3 class="mb-3 font-weight-bold">리뷰 순위</h3>
+                <div th:each="movieReview : ${moviesOfTopReview}">
+                    <div class="mb-3 row">
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-link black-text">
+                                <img th:src="'https://image.tmdb.org/t/p/w500' + ${movieReview.posterUrl}" class="movie-poster-img"/>
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-info-box movie-link black-text d-block">
+                                <div th:text="${movieReview.title}" class="movieTitle"></div>
+                                <div th:text="'조회수 ' + ${reviewCountOfTopReview[movieReview.id]} + ' 회'" class="reviewCount"></div>
+                                <span th:each="i : ${#numbers.sequence(1, 10)}"
+                                      th:text="${i <= movieReview.rating} ? '★' : '☆'"
+                                      th:style="${i <= movieReview.rating}
+                                                ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
+                                                : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
+                                </span>
+                                <div th:if="${reviewsOfTopReview[movieReview.id]} != null">
+                                    <div th:each="review : ${reviewsOfTopReview[movieReview.id]}">
+                                        <span th:text="${review.content}" class="reviewText"></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img src="/images/popcorn_image.png" class="content-img"/>
+        </div>
+    </div>
+</section>
+</div>
+<script>
+  if (window.location.hash === '#_=_') {
+    history.replaceState(null, null, window.location.href.split('#')[0]);
+  }
+</script>
+
 </body>
 </html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.CinephileLog.mapper.UserScoreMapper">
+
+    <select id="selectEligibleUsers" resultType="com.CinephileLog.dto.UserScoreDTO">
+        SELECT
+            u.user_id AS userId,
+            COUNT(DISTINCT r.review_id) AS reviewCount,
+            SUM(r.like_count) AS likeCount,
+            u.grade_id AS currentGradeId
+        FROM user u
+                 JOIN review r ON u.user_id = r.user_id
+        GROUP BY u.user_id
+        HAVING COUNT(r.review_id) >= 50
+    </select>
+
+    <insert id="upsertUserScore" parameterType="com.CinephileLog.dto.UserScoreDTO">
+        INSERT INTO user_score (user_id, review_count, like_count, weighted_score)
+        VALUES (#{userId}, #{reviewCount}, #{likeCount}, #{weightedScore})
+            ON DUPLICATE KEY UPDATE
+                                 review_count = VALUES(review_count),
+                                 like_count = VALUES(like_count),
+                                 weighted_score = VALUES(weighted_score);
+    </insert>
+</mapper>

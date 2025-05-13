@@ -37,4 +37,6 @@ out/
 .vscode/
 
 # key.properties 숨기기
-/src/main/resources/key.properties
+/src/main/resources/secret.properties
+
+.DS_Store
