@@ -34,6 +34,9 @@ public class HomeViewController {
     @GetMapping("/home")
     public String homeView(@AuthenticationPrincipal OAuth2User user, Model model, HttpSession session) {
         if (user != null) {
+            if (session.getAttribute("nickname") == null) {
+                return "redirect:/logout";
+            }
             model.addAttribute("userId", user.getAttribute("userId"));
             model.addAttribute("nickname", session.getAttribute("nickname").toString());
             model.addAttribute("gradeName", session.getAttribute("gradeName").toString());
