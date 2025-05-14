@@ -27,14 +27,8 @@ public class ReviewLikeController {
     @PostMapping("/reviews/{reviewId}/like")
     public ResponseEntity<ReviewLikeResponse> reviewLike(@PathVariable Long reviewId,
                                                          @AuthenticationPrincipal OAuth2User oAuth2User) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없음"));
-
         Long userId = oAuth2User.getAttribute("userId");
-
-        ReviewLikeResult result = reviewLikeService.reviewLike(userId, review);
-
+        ReviewLikeResult result = reviewLikeService.reviewLike(userId, reviewId);
         return ResponseEntity.ok(new ReviewLikeResponse(result.isLiked(), result.isGradeUp()));
     }
-
 }

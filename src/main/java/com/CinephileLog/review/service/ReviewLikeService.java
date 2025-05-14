@@ -34,30 +34,36 @@ public class ReviewLikeService {
     }
 
     @Transactional
-    public ReviewLikeResult reviewLike(Long userId, Review review) {
+    public ReviewLikeResult reviewLike(Long userId, Long reviewId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없음"));
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없음"));
 
         Optional<ReviewLike> existingLike = reviewLikeRepository.findByUserAndReview(user, review);
 
         boolean liked;
+        long currentLikeCount = review.getLikeCount();
+
         if (existingLike.isPresent()) {
             reviewLikeRepository.delete(existingLike.get());
-            review.setLikeCount(review.getLikeCount() - 1);
             liked = false;
+            currentLikeCount--;
         } else {
-            ReviewLike like = new ReviewLike(user, review);
-            reviewLikeRepository.save(like);
-            review.setLikeCount(review.getLikeCount() + 1);
+            reviewLikeRepository.save(new ReviewLike(user, review));
             liked = true;
+            currentLikeCount++;
         }
-
-        reviewRepository.save(review);
+        reviewRepository.updateLikeCount(reviewId, currentLikeCount);
 
         boolean gradeUp = liked && gradeService.updateGradeForUser(userId);
 
         return new ReviewLikeResult(liked, gradeUp);
     }
+
+
+
 
 
 
