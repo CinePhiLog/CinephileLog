@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const reviewId = button.getAttribute('data-review-id');
             const isLiked = button.getAttribute('data-liked') === 'true';
+            button.enabled = false;
 
             fetch(`/reviews/${reviewId}/like`, {
                 method: 'POST',
@@ -121,10 +122,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         button.setAttribute('data-liked', 'false');
                         likeCountSpan.textContent = (likeCount - 1).toString();
                     }
+                    button.enabled = true;
                 })
                 .catch(error => {
                     console.error('좋아요 처리 오류:', error);
                     alert('좋아요 요청 중 오류가 발생했습니다.');
+                    button.enabled = true;
                 });
         });
     });
