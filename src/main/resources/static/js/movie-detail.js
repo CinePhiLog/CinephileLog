@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const reviewId = button.getAttribute('data-review-id');
             const isLiked = button.getAttribute('data-liked') === 'true';
+            button.enabled = false;
 
             fetch(`/reviews/${reviewId}/like`, {
                 method: 'POST',
@@ -121,20 +122,16 @@ document.addEventListener('DOMContentLoaded', function () {
                         button.setAttribute('data-liked', 'false');
                         likeCountSpan.textContent = (likeCount - 1).toString();
                     }
-
-                    if (data.gradeUp) {
-                        alert('등업하셨습니다!');
-                    }
-
+                    button.enabled = true;
                 })
                 .catch(error => {
                     console.error('좋아요 처리 오류:', error);
                     alert('좋아요 요청 중 오류가 발생했습니다.');
+                    button.enabled = true;
                 });
         });
     });
 });
-
 
 
 // 페이지네이션
@@ -317,13 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(error || '리뷰 전송에 실패했습니다.');
             }
 
-            const responseBody = await response.json();
-
             alert(reviewId ? '리뷰가 수정되었습니다.' : '리뷰가 등록되었습니다.');
-
-            if (responseBody.gradeUp) {
-                alert('등업하셨습니다!');
-            }
             window.location.reload();
         } catch (error) {
             alert(error.message);
